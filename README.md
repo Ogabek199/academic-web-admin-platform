@@ -1,36 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Akademik Profil Platformasi
 
-## Getting Started
+Google Scholar o'xshash akademik profil platformasi. Admin panel va public website bilan.
 
-First, run the development server:
+## 🚀 Xususiyatlar
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Admin Panel
+- ✅ **Login/Auth tizimi** - Parol bilan kirish
+- ✅ **Profil boshqaruvi** - Shaxsiy ma'lumotlarni yuklash va saqlash
+- ✅ **Rasm yuklash** - Profil rasmini yuklash
+- ✅ **Nashrlar boshqaruvi** - Ilmiy nashrlar ro'yxatini boshqarish
+- ✅ **Statistika** - Nashrlar va sitatalar bo'yicha batafsil statistika
+- ✅ **Chartlar** - Vizual statistika grafiklari
+
+### Public Website
+- ✅ **Carousel** - Yangiliklar va xususiyatlar carousel
+- ✅ **Search** - Profillarni qidirish funksiyasi
+- ✅ **User Profiles** - Barcha userlarning profillari
+- ✅ **Public Profile Pages** - Har bir userning alohida sahifasi
+- ✅ **Responsive Design** - Barcha qurilmalarda ishlaydi
+
+## 🏗️ Arxitektura
+
+Loyiha **FSD (Feature-Sliced Design)** arxitektura asosida yaratilgan:
+
+```
+site-1/
+├── app/                    # Next.js App Router
+│   ├── admin/              # Admin panel sahifalari
+│   ├── profile/            # Public profile sahifalari
+│   ├── api/                # Backend API routes
+│   └── page.tsx            # Public website asosiy sahifa
+├── shared/                  # Shared komponentlar
+│   ├── ui/                 # UI komponentlar (Button, Input)
+│   └── components/         # Shared komponentlar
+├── components/             # Legacy komponentlar
+├── lib/                    # Utility funksiyalar
+│   ├── db.ts               # Database (JSON file)
+│   └── auth.ts             # Authentication
+└── types/                  # TypeScript turlari
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Texnologiyalar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js 16** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Recharts** - Statistika grafiklari
+- **Swiper** - Carousel
+- **bcryptjs** - Password hashing
+- **jsonwebtoken** - JWT authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ O'rnatish
 
-## Learn More
+1. Paketlarni o'rnating:
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Development serverini ishga tushiring:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Admin userni yaratish (bir marta):
+```bash
+# Browserda oching: http://localhost:3000/api/init
+# Yoki avtomatik yaratiladi
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Brauzerda oching:
+- Public website: [http://localhost:3000](http://localhost:3000)
+- Admin panel: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
-## Deploy on Vercel
+## 🔐 Default Login
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Username:** `admin`
+- **Password:** `admin123`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+⚠️ **Eslatma:** Production'da parolni o'zgartiring!
+
+## 📝 Foydalanish
+
+### Admin Panel
+
+1. `/admin/login` sahifasiga o'ting
+2. Login qiling
+3. Profil ma'lumotlarini to'ldiring (`/admin/profile`)
+4. Nashrlar qo'shing (`/admin/publications`)
+5. Statistika ko'ring (`/admin/statistics`)
+
+### Public Website
+
+1. Asosiy sahifada carousel va search funksiyasidan foydalaning
+2. Profillarni qidiring
+3. Profil sahifasiga o'tib batafsil ma'lumotlarni ko'ring
+
+## 💾 Ma'lumotlar saqlash
+
+Ma'lumotlar `data/` papkasida JSON fayllarda saqlanadi:
+
+- `data/users.json` - Userlar
+- `data/profiles.json` - Profillar
+- `data/publications.json` - Nashrlar
+
+**Eslatma:** Production'da PostgreSQL, MongoDB yoki boshqa database ishlatish tavsiya etiladi.
+
+## 🎨 Dizayn
+
+- **Minimalist** - Toza va zamonaviy dizayn
+- **Akademik** - Ilmiy va professional ko'rinish
+- **Responsive** - Barcha qurilmalarda ishlaydi
+- **Senior Level** - Professional UI/UX
+
+## 🔒 Xavfsizlik
+
+- Password hashing (bcrypt)
+- JWT authentication
+- Protected admin routes
+- File upload validation
+
+## 📊 Statistika
+
+- Jami nashrlar
+- Jami sitatalar
+- h-index
+- i10-index
+- Yil bo'yicha grafiklar
+- Tur bo'yicha grafiklar
+
+## 🚀 Production Build
+
+```bash
+npm run build
+npm start
+```
+
+## 📁 Struktura
+
+```
+app/
+├── admin/              # Admin panel
+│   ├── login/         # Login sahifasi
+│   ├── profile/       # Profil sozlash
+│   ├── publications/   # Nashrlar boshqaruvi
+│   └── statistics/    # Statistika
+├── profile/            # Public profile sahifalari
+│   └── [userId]/      # User profil sahifasi
+└── api/                # Backend API
+    ├── auth/          # Authentication
+    ├── admin/         # Admin API
+    └── public/        # Public API
+
+shared/
+├── ui/                # UI komponentlar
+└── components/        # Shared komponentlar
+```
+
+## 🐛 Muammolar
+
+Agar muammo yuzaga kelsa:
+
+1. `data/` papkasini yarating
+2. Admin userni yaratish: `/api/init` ni oching
+3. Browser console'ni tekshiring
+
+## 📄 Litsenziya
+
+MIT
+
+## 👨‍💻 Yaratuvchi
+
+Akademik Profil Platformasi
