@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getStatistics } from '@/lib/data';
+import { getStatistics } from '@/lib/backend/db/data';
 import { Statistics } from '@/types';
-import StatisticsCards from '@/components/StatisticsCards';
-import Charts from '@/components/Charts';
+import StatisticsCards from '@/components/admin/StatisticsCards';
+import Charts from '@/components/admin/Charts';
 
 export default function StatisticsPage() {
   const [statistics, setStatistics] = useState<Statistics | null>(null);

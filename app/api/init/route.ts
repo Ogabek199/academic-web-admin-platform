@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { initAdmin } from '@/lib/auth';
+import { initAdmin } from '@/lib/backend/auth';
 
 export async function GET() {
   try {

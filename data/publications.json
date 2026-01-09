@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "pub_001",
+    "userId": "1766867815330",
+    "title": "O'zbekistonda sun'iy intellekt texnologiyalarining rivojlanishi va istiqbollari",
+    "authors": ["Abubakir Aka", "Ahmadjon Karimov", "Malika Toshmatova"],
+    "journal": "O'zbekiston Respublikasi Fanlar akademiyasi axborotnomasi",
+    "year": 2024,
+    "citations": 45,
+    "type": "article",
+    "doi": "10.12345/uzbek.2024.001",
+    "link": "https://example.com/pub1"
+  },
+  {
+    "id": "pub_002",
+    "userId": "1766867815330",
+    "title": "Matematik modellashtirish usullari yordamida iqtisodiy tahlil",
+    "authors": ["Abubakir Aka", "Dilshod Rahimov"],
+    "journal": "Toshkent davlat universiteti ilmiy jurnali",
+    "year": 2024,
+    "citations": 32,
+    "type": "article",
+    "doi": "10.12345/tdu.2024.002",
+    "link": "https://example.com/pub2"
+  },
+  {
+    "id": "pub_003",
+    "userId": "1766867815330",
+    "title": "Ma'lumotlar tahlili va katta ma'lumotlar (Big Data) texnologiyalari",
+    "authors": ["Abubakir Aka", "Feruza Yusupova", "Javohir Mirzayev"],
+    "journal": "O'zbekiston milliy universiteti ilmiy jurnali",
+    "year": 2023,
+    "citations": 67,
+    "type": "article",
+    "doi": "10.12345/omu.2023.003",
+    "link": "https://example.com/pub3"
+  },
+  {
+    "id": "pub_004",
+    "userId": "1766867815330",
+    "title": "Kvant hisoblash va kriptografiya: zamonaviy yondashuvlar",
+    "authors": ["Abubakir Aka", "Sardor Alimov"],
+    "journal": "Samarqand davlat universiteti ilmiy jurnali",
+    "year": 2023,
+    "citations": 28,
+    "type": "article",
+    "doi": "10.12345/sdu.2023.004",
+    "link": "https://example.com/pub4"
+  },
+  {
+    "id": "pub_005",
+    "userId": "1766867815330",
+    "title": "Biologik tizimlarning raqamli modellashtirishi",
+    "authors": ["Abubakir Aka", "Gulnoza Karimova", "Temur Bekov"],
+    "journal": "O'zbekiston biologiya jurnali",
+    "year": 2024,
+    "citations": 41,
+    "type": "article",
+    "doi": "10.12345/bio.2024.005",
+    "link": "https://example.com/pub5"
+  },
+  {
+    "id": "pub_006",
+    "userId": "1766867815330",
+    "title": "Fizika va matematika fanlarining integratsiyasi",
+    "authors": ["Abubakir Aka", "Rustam Toshmatov"],
+    "journal": "Fizika va matematika ilmiy jurnali",
+    "year": 2023,
+    "citations": 53,
+    "type": "article",
+    "doi": "10.12345/fizmat.2023.006",
+    "link": "https://example.com/pub6"
+  },
+  {
+    "id": "pub_007",
+    "userId": "1766867815330",
+    "title": "Kimyoviy reaksiyalarning kompyuter modellashtirishi",
+    "authors": ["Abubakir Aka", "Dilnoza Rahimova", "Azizbek Ismoilov"],
+    "journal": "O'zbekiston kimyo jurnali",
+    "year": 2024,
+    "citations": 38,
+    "type": "article",
+    "doi": "10.12345/kimyo.2024.007",
+    "link": "https://example.com/pub7"
+  },
+  {
+    "id": "pub_008",
+    "userId": "1766867815330",
+    "title": "Tabiiy tilni qayta ishlash texnologiyalari o'zbek tilida",
+    "authors": ["Abubakir Aka", "Nigora Toshmatova", "Bobur Karimov"],
+    "journal": "Axborot texnologiyalari va telekommunikatsiyalar jurnali",
+    "year": 2024,
+    "citations": 49,
+    "type": "article",
+    "doi": "10.12345/itt.2024.008",
+    "link": "https://example.com/pub8"
+  },
+  {
+    "id": "pub_009",
+    "userId": "1766867815330",
+    "title": "Mashina o'rganishi algoritmlari va ularning qo'llanilishi",
+    "authors": ["Abubakir Aka", "Shahnoza Yusupova"],
+    "journal": "Kompyuter fanlari va dasturlash jurnali",
+    "year": 2023,
+    "citations": 72,
+    "type": "article",
+    "doi": "10.12345/cs.2023.009",
+    "link": "https://example.com/pub9"
+  },
+  {
+    "id": "pub_010",
+    "userId": "1766867815330",
+    "title": "Iqtisodiyotda raqamli transformatsiya va innovatsion yechimlar",
+    "authors": ["Abubakir Aka", "Jasur Toshmatov", "Madina Karimova"],
+    "journal": "Iqtisodiyot va innovatsiya jurnali",
+    "year": 2024,
+    "citations": 35,
+    "type": "article",
+    "doi": "10.12345/ekon.2024.010",
+    "link": "https://example.com/pub10"
+  }
+]

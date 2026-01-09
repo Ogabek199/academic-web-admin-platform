@@ -1,6 +1,6 @@
 'use client';
 
-import PublicationForm from '@/components/PublicationForm';
+import PublicationForm from '@/components/admin/PublicationForm';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
@@ -8,7 +8,7 @@ export default function NewPublicationPage() {
   return (
     <div className="space-y-6">
       <Link
-        href="/publications"
+        href="/website/publications"
         className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
       >
         <ArrowLeft className="h-4 w-4" />

@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPublications } from '@/lib/data';
+import { getPublications } from '@/lib/backend/db/data';
 import { Publication } from '@/types';
-import PublicationTable from '@/components/PublicationTable';
+import PublicationTable from '@/components/admin/PublicationTable';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
@@ -27,7 +27,7 @@ export default function PublicationsPage() {
           </p>
         </div>
         <Link
-          href="/publications/new"
+          href="/website/publications/new"
           className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
         >
           <Plus className="h-5 w-5" />

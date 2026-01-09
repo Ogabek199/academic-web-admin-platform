@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
-import { getProfileByUserId, saveProfile } from '@/lib/db';
+import { verifyToken } from '@/lib/backend/auth';
+import { getProfileByUserId, saveProfile } from '@/lib/backend/db';
 import { Profile } from '@/types';
 
 export async function GET(request: NextRequest) {

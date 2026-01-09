@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Mail, Globe, ExternalLink, BookOpen, TrendingUp } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
-import PublicationTable from '@/components/PublicationTable';
-import StatisticsCards from '@/components/StatisticsCards';
-import Charts from '@/components/Charts';
+import PublicationTable from '@/components/admin/PublicationTable';
+import StatisticsCards from '@/components/admin/StatisticsCards';
+import Charts from '@/components/admin/Charts';
 import { Statistics } from '@/types';
 import PublicNavigation from '@/shared/components/PublicNavigation';
 

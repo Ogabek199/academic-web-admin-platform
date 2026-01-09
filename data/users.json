@@ -5,5 +5,12 @@
     "password": "$2b$10$sOWhScRlwvbaEU09eZO2K.3639pD6FqKNisKaOm1BzB.86K2x1QIW",
     "email": "admin@example.com",
     "createdAt": "2025-12-27T20:36:55.330Z"
+  },
+  {
+    "id": "1767000000000",
+    "username": "user1",
+    "password": "$2b$10$NHmphXG3nHPtXTmOL6e0aOaS2jMjDWkGc85xN9bUbTBf5p8OlgIgu",
+    "email": "user1@example.com",
+    "createdAt": "2025-01-28T00:00:00.000Z"
   }
 ]

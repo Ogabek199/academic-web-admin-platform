@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPublicationsByUserId } from '@/lib/db';
-import StatisticsCards from '@/components/StatisticsCards';
-import Charts from '@/components/Charts';
+import { getPublicationsByUserId } from '@/lib/backend/db';
+import StatisticsCards from '@/components/admin/StatisticsCards';
+import Charts from '@/components/admin/Charts';
 import { Statistics } from '@/types';
 
 export default function AdminStatisticsPage() {

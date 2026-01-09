@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
-import { getPublicationsByUserId, addPublication, deletePublication } from '@/lib/db';
+import { verifyToken } from '@/lib/backend/auth';
+import { getPublicationsByUserId, addPublication, deletePublication } from '@/lib/backend/db';
 import { Publication } from '@/types';
 
 export async function GET(request: NextRequest) {

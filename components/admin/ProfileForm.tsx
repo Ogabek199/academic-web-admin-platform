@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Profile } from '@/types';
-import { saveProfile, getProfile } from '@/lib/data';
+import { saveProfile, getProfile } from '@/lib/backend/db/data';
 import { useRouter } from 'next/navigation';
 import { Save } from 'lucide-react';
 

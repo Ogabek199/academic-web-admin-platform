@@ -4,7 +4,10 @@ Google Scholar o'xshash akademik profil platformasi. Admin panel va public websi
 
 ## 🚀 Xususiyatlar
 
+Domen Nomi : uzscholar.uz
+
 ### Admin Panel
+
 - ✅ **Login/Auth tizimi** - Parol bilan kirish
 - ✅ **Profil boshqaruvi** - Shaxsiy ma'lumotlarni yuklash va saqlash
 - ✅ **Rasm yuklash** - Profil rasmini yuklash
@@ -13,6 +16,7 @@ Google Scholar o'xshash akademik profil platformasi. Admin panel va public websi
 - ✅ **Chartlar** - Vizual statistika grafiklari
 
 ### Public Website
+
 - ✅ **Carousel** - Yangiliklar va xususiyatlar carousel
 - ✅ **Search** - Profillarni qidirish funksiyasi
 - ✅ **User Profiles** - Barcha userlarning profillari
@@ -53,22 +57,26 @@ site-1/
 ## 🛠️ O'rnatish
 
 1. Paketlarni o'rnating:
+
 ```bash
 npm install
 ```
 
 2. Development serverini ishga tushiring:
+
 ```bash
 npm run dev
 ```
 
 3. Admin userni yaratish (bir marta):
+
 ```bash
 # Browserda oching: http://localhost:3000/api/init
 # Yoki avtomatik yaratiladi
 ```
 
 4. Brauzerda oching:
+
 - Public website: [http://localhost:3000](http://localhost:3000)
 - Admin panel: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
@@ -76,6 +84,9 @@ npm run dev
 
 - **Username:** `admin`
 - **Password:** `admin123`
+
+- **Username:** `user1`
+- **Password:** `user123`
 
 ⚠️ **Eslatma:** Production'da parolni o'zgartiring!
 

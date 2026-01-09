@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Publication } from '@/types';
-import { addPublication } from '@/lib/data';
+import { addPublication } from '@/lib/backend/db/data';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 

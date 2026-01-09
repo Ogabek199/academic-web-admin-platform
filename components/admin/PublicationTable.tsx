@@ -2,7 +2,7 @@
 
 import { Publication } from '@/types';
 import { ExternalLink, Trash2 } from 'lucide-react';
-import { deletePublication } from '@/lib/data';
+import { deletePublication } from '@/lib/backend/db/data';
 import { useRouter } from 'next/navigation';
 
 interface PublicationTableProps {

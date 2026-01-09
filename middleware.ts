@@ -11,12 +11,14 @@ export function middleware(request: NextRequest) {
 
   const publicRoutes = [
     "/",
+    "/website",
     "/api/auth",
     "/api/public",
     "/search",
     "/profile",
     "/publications",
     "/statistics",
+    "/about",
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route)

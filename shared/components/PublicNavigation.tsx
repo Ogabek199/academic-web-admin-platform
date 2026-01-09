@@ -21,15 +21,26 @@ export default function PublicNavigation() {
 
           <div className="flex items-center space-x-2 md:space-x-4">
             <Link
-              href="/"
+              href="/website"
               className={`px-3 md:px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                pathname === "/"
+                pathname === "/" || pathname === "/website"
                   ? "bg-blue-50 text-blue-700"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               }`}
             >
               <span className="hidden sm:inline">Asosiy</span>
               <span className="sm:hidden">🏠</span>
+            </Link>
+            <Link
+              href="/about"
+              className={`px-3 md:px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                pathname === "/about"
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <span className="hidden sm:inline">Website Haqida</span>
+              <span className="sm:hidden">ℹ️</span>
             </Link>
             <Link href="/admin/login">
               <Button

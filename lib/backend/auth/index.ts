@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { createUser, getUserByUsername, getUsers } from './db';
+import { createUser, getUserByUsername, getUsers } from '../db';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -51,13 +51,10 @@ export async function loginUser(username: string, password: string) {
   return { user: { id: user.id, username: user.username, email: user.email }, token };
 }
 
-// Initialize admin user if doesn't exist
+// Initialize users file if doesn't exist (no default admin)
 export async function initAdmin() {
-  const users = getUsers();
-  if (users.length === 0) {
-    const adminPassword = await hashPassword('admin123');
-    createUser('admin', adminPassword, 'admin@example.com');
-    console.log('Admin user created: username=admin, password=admin123');
-  }
+  // Just ensure users file exists, don't create default admin
+  // Each user should get their own login/password from admin
+  getUsers(); // This will create the file if it doesn't exist
 }
 

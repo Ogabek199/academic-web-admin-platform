@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyToken } from '@/lib/backend/auth';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 

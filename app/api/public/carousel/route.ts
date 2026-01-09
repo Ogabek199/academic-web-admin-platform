@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllPublicProfiles, getPublications } from '@/lib/db';
+import { getAllPublicProfiles, getPublications } from '@/lib/backend/db';
 
 // Google Scholar'dan olingan realistik example ma'lumotlar
 const exampleProfiles = [

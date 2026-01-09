@@ -137,7 +137,6 @@ ${message}
       body: JSON.stringify({
         chat_id: chatId,
         text: telegramMessage,
-        parse_mode: "Markdown",
       }),
     });
 

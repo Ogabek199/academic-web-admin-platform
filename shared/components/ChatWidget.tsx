@@ -202,13 +202,13 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                <Input
-                  type="text"
+                  <Input
+                    type="text"
                   placeholder="Ismingiz *"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="text-sm"
-                  disabled={loading || sent}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="text-sm"
+                    disabled={loading || sent}
                   required
                 />
                 <Input
@@ -219,38 +219,38 @@ export default function ChatWidget() {
                   className="text-sm"
                   disabled={loading || sent}
                   required
-                />
-                <Input
+                  />
+                  <Input
                   type="text"
                   placeholder="Telegram username (@username) *"
                   value={telegramUsername}
                   onChange={(e) => setTelegramUsername(e.target.value)}
-                  className="text-sm"
-                  disabled={loading || sent}
+                    className="text-sm"
+                    disabled={loading || sent}
                   required
-                />
-                <Input
-                  type="text"
+                  />
+                  <Input
+                    type="text"
                   placeholder="Xabar (ixtiyoriy)"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   className="text-sm"
-                  disabled={loading || sent}
-                />
-                <Button
-                  type="submit"
+                    disabled={loading || sent}
+                  />
+                  <Button
+                    type="submit"
                   disabled={loading || sent || !name.trim() || !surname.trim() || !telegramUsername.trim()}
                   className="w-full flex items-center justify-center"
-                >
-                  {loading ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
+                  >
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
                     <>
                       <Send className="w-5 h-5 mr-2" />
                       So'rov yuborish
                     </>
-                  )}
-                </Button>
+                    )}
+                  </Button>
               </form>
             </div>
           </>
