@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const TELEGRAM_BOT_TOKEN = "AAHAlsF9mbuovyvNZiMta7KXSqbKAO5fa3Q";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8070117237:AAHVkDVQLv1Zg8M_57mwk7sXwQlIDpQIk7I";
 
 export async function GET() {
   try {

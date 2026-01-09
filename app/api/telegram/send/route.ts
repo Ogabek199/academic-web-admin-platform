@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const TELEGRAM_BOT_TOKEN = "8070117237:AAHVkDVQLv1Zg8M_57mwk7sXwQlIDpQIk7I";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8070117237:AAHVkDVQLv1Zg8M_57mwk7sXwQlIDpQIk7I";
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // Avtomatik chat_id olish funksiyasi
@@ -77,16 +77,18 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             error: "Telegram chat ID topilmadi.",
-            hint: `Quyidagi qadamlarni bajaring:
-1. Telegram'da bot'ga /start yuboring
-2. Bot'ga biror xabar yuboring (masalan: "Salom")
-3. Keyin bu xabarni qayta yuborishga harakat qiling
-
-Yoki manual ravishda:
-1. Quyidagi linkni oching: https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates
-2. "chat":{"id": raqamni toping
-3. .env.local faylga qo'shing: TELEGRAM_CHAT_ID=raqam`,
+            hint: `Vercel'da quyidagi qadamlarni bajaring:
+1. Vercel Dashboard > Settings > Environment Variables ga kiring
+2. TELEGRAM_CHAT_ID nomli yangi variable qo'shing
+3. Chat ID'ni olish uchun:
+   - Telegram'da bot'ga /start yuboring
+   - Bot'ga biror xabar yuboring (masalan: "Salom")
+   - Quyidagi linkni oching: https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates
+   - "chat":{"id": raqamni toping va TELEGRAM_CHAT_ID ga qo'shing
+4. TELEGRAM_BOT_TOKEN ham qo'shing (agar yo'q bo'lsa)
+5. Redeploy qiling`,
             setupUrl: `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`,
+            vercelInstructions: true,
           },
           { status: 500 }
         );

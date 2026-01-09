@@ -167,6 +167,33 @@ shared/
 └── components/        # Shared komponentlar
 ```
 
+## 🚀 Vercel Deployment
+
+### Environment Variables
+
+Vercel'da quyidagi environment variable'larni qo'shing:
+
+1. **Vercel Dashboard** > **Settings** > **Environment Variables**
+2. Quyidagi variable'larni qo'shing:
+
+```
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
+```
+
+### Chat ID Olish
+
+1. Telegram'da bot'ga `/start` yuboring
+2. Bot'ga biror xabar yuboring
+3. Quyidagi linkni oching:
+   ```
+   https://api.telegram.org/botYOUR_BOT_TOKEN/getUpdates
+   ```
+4. JSON javobdan `"chat":{"id":` qismini toping
+5. `id` qiymatini `TELEGRAM_CHAT_ID` ga qo'shing
+
+Batafsil qo'llanma: [VERCEL_SETUP.md](./VERCEL_SETUP.md)
+
 ## 🐛 Muammolar
 
 Agar muammo yuzaga kelsa:
@@ -174,6 +201,7 @@ Agar muammo yuzaga kelsa:
 1. `data/` papkasini yarating
 2. Admin userni yaratish: `/api/init` ni oching
 3. Browser console'ni tekshiring
+4. Vercel'da environment variable'larni tekshiring
 
 ## 📄 Litsenziya
 
