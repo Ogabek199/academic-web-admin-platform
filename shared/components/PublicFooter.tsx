@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { GraduationCap, Send } from 'lucide-react';
+import { GraduationCap, Phone, Send } from 'lucide-react';
 
 const TELEGRAM_USERNAME = 'otaxonov_o17';
 
@@ -73,10 +73,19 @@ export default function PublicFooter() {
               href={`https://t.me/${TELEGRAM_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2563EB] text-white text-sm font-medium hover:bg-[#1d4ed8] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 mb-2 rounded-xl bg-[#2563EB] text-white text-sm font-medium hover:bg-[#1d4ed8] transition-colors"
             >
               <Send className="h-4 w-4" />
               Telegram
+            </a>
+            <a
+              href="tel:+998901502657"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2563EB] text-white text-sm font-medium hover:bg-[#1d4ed8] transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              +998 90 150 26 57
             </a>
           </div>
         </div>

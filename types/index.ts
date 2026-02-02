@@ -33,6 +33,7 @@ export interface Publication {
   doi?: string;
   link?: string;
   type: 'article' | 'conference' | 'book' | 'thesis' | 'other';
+  content?: string; // Nashrning to'liq matni
 }
 
 export interface Statistics {

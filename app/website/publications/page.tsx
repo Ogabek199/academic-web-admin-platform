@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { BookOpen, Calendar, Star, ExternalLink, Search, Eye } from 'lucide-react';
+import { BookOpen, Calendar, Star, Search, Eye } from 'lucide-react';
 import { Publication } from '@/types';
 
 export default function PublicationsPage() {
@@ -128,17 +127,6 @@ export default function PublicationsPage() {
                       <Eye className="h-4 w-4" />
                       Nashrni koʻrish
                     </button>
-                    {pub.link && (
-                      <a
-                        href={pub.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#2563EB] hover:text-[#1d4ed8] p-1.5 rounded-lg hover:bg-[#2563EB]/10 transition-colors"
-                        aria-label="Tashqi havola"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
                   </span>
                 </div>
               </div>

@@ -1,7 +1,8 @@
 'use client';
 
 import { Publication } from '@/types';
-import { ExternalLink } from 'lucide-react';
+import { Eye } from 'lucide-react';
+import Link from 'next/link';
 
 interface PublicationListProps {
   publications: Publication[];
@@ -46,7 +47,12 @@ export default function PublicationList({ publications }: PublicationListProps) 
             {publications.map((pub) => (
               <tr key={pub.id} className="hover:bg-gray-50">
                 <td className="px-4 lg:px-6 py-4 text-sm font-medium text-gray-900">
-                  {pub.title}
+                  <Link 
+                    href={`/website/publications/${pub.id}`}
+                    className="hover:text-[#2563EB] transition-colors"
+                  >
+                    {pub.title}
+                  </Link>
                 </td>
                 <td className="px-4 lg:px-6 py-4 text-sm text-gray-600">
                   {pub.authors?.join(', ') ?? '-'}
@@ -61,17 +67,13 @@ export default function PublicationList({ publications }: PublicationListProps) 
                   {pub.citations ?? 0}
                 </td>
                 <td className="px-4 lg:px-6 py-4 text-sm">
-                  {pub.link && (
-                    <a
-                      href={pub.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#2563EB] hover:text-[#1d4ed8]"
-                      aria-label="Havolani ochish"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  )}
+                  <Link
+                    href={`/website/publications/${pub.id}`}
+                    className="text-[#2563EB] hover:text-[#1d4ed8]"
+                    aria-label="Nashrni ko'rish"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -81,24 +83,19 @@ export default function PublicationList({ publications }: PublicationListProps) 
       {/* Mobile card layout */}
       <div className="lg:hidden divide-y divide-gray-200">
         {publications.map((pub) => (
-          <div key={pub.id} className="p-4 hover:bg-gray-50">
+          <Link 
+            key={pub.id} 
+            href={`/website/publications/${pub.id}`}
+            className="block p-4 hover:bg-gray-50 transition-colors"
+          >
             <p className="font-medium text-gray-900 text-sm line-clamp-2">{pub.title}</p>
             <p className="text-xs text-gray-500 mt-1">{pub.authors?.join(', ')}</p>
             <p className="text-xs text-gray-500 mt-0.5">{pub.journal ?? '-'} • {pub.year}</p>
             <div className="mt-2 flex items-center justify-between">
               <span className="text-sm font-medium text-[#10b981]">{pub.citations ?? 0} sitata</span>
-              {pub.link && (
-                <a
-                  href={pub.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#2563EB] text-sm font-medium"
-                >
-                  Havola <ExternalLink className="h-3 w-3 inline" />
-                </a>
-              )}
+              <span className="text-[#2563EB] text-sm font-medium">Ko{"'"}rish</span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
