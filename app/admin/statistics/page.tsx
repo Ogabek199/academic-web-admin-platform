@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPublicationsByUserId } from '@/lib/backend/db';
 import StatisticsCards from '@/components/admin/StatisticsCards';
 import Charts from '@/components/admin/Charts';
 import { Statistics } from '@/types';
@@ -86,7 +85,8 @@ export default function AdminStatisticsPage() {
   if (!statistics) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#2563EB] border-t-transparent mx-auto"></div>
+        <p className="mt-4 text-gray-600">Yuklanmoqda...</p>
       </div>
     );
   }
@@ -94,8 +94,8 @@ export default function AdminStatisticsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Statistika</h1>
-        <p className="mt-2 text-gray-600">Nashrlar va sitatalar bo&apos;yicha batafsil statistika</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Statistika</h1>
+        <p className="mt-2 text-gray-600">Nashrlar va sitatalar bo&apos;yicha batafsil statistika va grafiklar</p>
       </div>
 
       <StatisticsCards statistics={statistics} />

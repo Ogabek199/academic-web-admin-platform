@@ -168,15 +168,15 @@ export default function AdminProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Profil sozlash</h1>
-        <p className="mt-2 text-gray-600">Shaxsiy ma&apos;lumotlarni yangilang</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Profil boshqaruvi</h1>
+        <p className="mt-2 text-gray-600">Shaxsiy ma&apos;lumotlarni yangilang va saqlang</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Photo Upload */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Profil rasmi</h2>
-          <div className="flex items-center space-x-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Profil rasmi</h2>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
             {formData.photo ? (
               <img
                 src={formData.photo}
@@ -217,8 +217,8 @@ export default function AdminProfilePage() {
         </div>
 
         {/* Basic Info */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Asosiy ma&apos;lumotlar</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Asosiy ma&apos;lumotlar</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Ism"
@@ -249,14 +249,14 @@ export default function AdminProfilePage() {
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               rows={4}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 outline-none"
             />
           </div>
         </div>
 
         {/* Research Interests */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tadqiqot sohalari</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tadqiqot sohalari</h2>
           <div className="flex gap-2 mb-4">
             <input
               type="text"
@@ -264,7 +264,7 @@ export default function AdminProfilePage() {
               onChange={(e) => setInterestInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
               placeholder="Tadqiqot sohasini kiriting"
-              className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-gray-300 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 outline-none"
             />
             <Button type="button" onClick={addInterest}>Qo&apos;shish</Button>
           </div>
@@ -272,7 +272,7 @@ export default function AdminProfilePage() {
             {formData.researchInterests?.map((interest, index) => (
               <span
                 key={index}
-                className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
+                className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] px-3 py-1 rounded-full text-sm"
               >
                 {interest}
                 <button
@@ -288,16 +288,16 @@ export default function AdminProfilePage() {
         </div>
 
         {/* Education */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Ta&apos;lim</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Ta&apos;lim</h2>
             <Button type="button" variant="outline" onClick={addEducation}>
               Qo&apos;shish
             </Button>
           </div>
           <div className="space-y-4">
             {formData.education?.map((edu, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4">
+              <div key={index} className="border border-gray-200 rounded-xl p-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Input
                     value={edu.degree}
@@ -331,8 +331,8 @@ export default function AdminProfilePage() {
         </div>
 
         {/* Contact */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Aloqa ma&apos;lumotlari</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Aloqa ma&apos;lumotlari</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Website"
@@ -364,10 +364,10 @@ export default function AdminProfilePage() {
           variant="primary" 
           size="lg" 
           disabled={loading} 
-          className="w-full sm:w-auto flex items-center justify-center"
+          className="w-full sm:w-auto flex items-center justify-center bg-[#2563EB] hover:bg-[#1d4ed8]"
         >
           <Save className="h-5 w-5 mr-2" />
-          {loading ? 'Saqlanmoqda...' : 'Saqlash'}
+          {loading ? 'Saqlanmoqda...' : 'Saqlash va ko\'rinish'}
         </Button>
       </form>
     </div>

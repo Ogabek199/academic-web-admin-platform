@@ -14,9 +14,9 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ profiles });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: error.message || 'Xatolik' },
+      { error: error instanceof Error ? error.message : 'Xatolik' },
       { status: 500 }
     );
   }

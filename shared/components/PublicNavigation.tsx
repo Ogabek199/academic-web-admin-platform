@@ -1,60 +1,123 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { GraduationCap, LogIn } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { GraduationCap, LogIn, Menu, X } from 'lucide-react';
+import { Button } from '@/shared/ui/Button';
+
+const TELEGRAM_USERNAME = 'otaxonov_o17';
 
 export default function PublicNavigation() {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { href: '/website', label: 'Asosiy' },
+    { href: '/website/researchers', label: 'Tadqiqotchilar' },
+    { href: '/website/publications', label: 'Nashrlar' },
+    { href: '/about', label: 'Platforma haqida' },
+  ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-6 w-6 text-blue-600" />
-            <span className="text-xl font-bold text-gray-900">
-              Akademik Platforma
+        <div className="flex items-center justify-between h-16 lg:h-18 gap-4">
+          {/* Logo */}
+          <Link href="/website" className="flex items-center gap-2 shrink-0">
+            <div className="w-10 h-10 bg-[#2563EB] rounded-xl flex items-center justify-center">
+              <GraduationCap className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-lg font-bold text-gray-900 hidden sm:inline">
+              UzScholar
             </span>
           </Link>
 
-          <div className="flex items-center space-x-2 md:space-x-4">
-            <Link
-              href="/website"
-              className={`px-3 md:px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                pathname === "/" || pathname === "/website"
-                  ? "bg-blue-50 text-blue-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href !== '/website' && pathname.startsWith(link.href));
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
+                      ? 'bg-[#2563EB]/10 text-[#2563EB]'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <a
+              href={`https://t.me/${TELEGRAM_USERNAME}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
             >
-              <span className="hidden sm:inline">Asosiy</span>
-              <span className="sm:hidden">🏠</span>
-            </Link>
-            <Link
-              href="/about"
-              className={`px-3 md:px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                pathname === "/about"
-                  ? "bg-blue-50 text-blue-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-            >
-              <span className="hidden sm:inline">Website Haqida</span>
-              <span className="sm:hidden">ℹ️</span>
-            </Link>
-            <Link href="/admin/login">
+              Telegram
+            </a>
+            <Link href="/admin/login" className="ml-2">
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs flex items-center md:text-sm"
+                className="flex items-center gap-2 border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]/10"
               >
-                <LogIn className="h-4 w-4 md:mr-2" />
-                <span className="hidden md:inline">Admin</span>
+                <LogIn className="h-4 w-4" />
+                Admin
               </Button>
             </Link>
+          </nav>
+
+          {/* Mobile: menu button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link href="/admin/login" className="p-2 rounded-lg text-gray-600 hover:bg-gray-100">
+              <LogIn className="h-5 w-5" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+              aria-label={mobileMenuOpen ? 'Menuni yopish' : 'Menuni ochish'}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-gray-200">
+            <nav className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-4 py-3 rounded-xl text-sm font-medium ${pathname === link.href
+                      ? 'bg-[#2563EB]/10 text-[#2563EB]'
+                      : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <a
+                href={`https://t.me/${TELEGRAM_USERNAME}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Telegram: @{TELEGRAM_USERNAME}
+              </a>
+            </nav>
+          </div>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }

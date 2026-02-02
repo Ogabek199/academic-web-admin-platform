@@ -3,11 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --admin-primary: #2563EB;
+  --admin-primary-hover: #1d4ed8;
+  --admin-accent-green: #10b981;
+  --admin-accent-purple: #8b5cf6;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --foreground: var(--foreground);
   --font-sans: var(--font-inter);
 }
 

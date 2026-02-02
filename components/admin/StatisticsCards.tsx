@@ -10,49 +10,57 @@ interface StatisticsCardsProps {
 export default function StatisticsCards({ statistics }: StatisticsCardsProps) {
   const cards = [
     {
-      title: 'Jami Nashrlar',
+      title: 'Jami nashrlar',
       value: statistics.totalPublications,
       icon: BookOpen,
-      color: 'bg-blue-500',
+      color: 'bg-[#2563EB]',
+      bgLight: 'bg-blue-50',
+      textColor: 'text-[#2563EB]',
     },
     {
-      title: 'Jami Sitatalar',
+      title: 'Jami sitatalar',
       value: statistics.totalCitations,
       icon: TrendingUp,
-      color: 'bg-green-500',
+      color: 'bg-[#10b981]',
+      bgLight: 'bg-emerald-50',
+      textColor: 'text-[#10b981]',
     },
     {
       title: 'h-index',
       value: statistics.hIndex,
       icon: Award,
-      color: 'bg-purple-500',
+      color: 'bg-[#8b5cf6]',
+      bgLight: 'bg-purple-50',
+      textColor: 'text-[#8b5cf6]',
     },
     {
       title: 'i10-index',
       value: statistics.i10Index,
       icon: FileText,
-      color: 'bg-orange-500',
+      color: 'bg-amber-500',
+      bgLight: 'bg-amber-50',
+      textColor: 'text-amber-600',
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {cards.map((card) => {
         const Icon = card.icon;
         return (
           <div
             key={card.title}
-            className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{card.title}</p>
-                  <p className="mt-2 text-3xl font-bold text-gray-900">{card.value}</p>
-                </div>
-                <div className={`rounded-full ${card.color} p-3`}>
-                  <Icon className="h-6 w-6 text-white" />
-                </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">{card.title}</p>
+                <p className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+                  {card.value}
+                </p>
+              </div>
+              <div className={`${card.bgLight} p-3 rounded-xl`}>
+                <Icon className={`h-6 w-6 ${card.textColor}`} />
               </div>
             </div>
           </div>
@@ -61,4 +69,3 @@ export default function StatisticsCards({ statistics }: StatisticsCardsProps) {
     </div>
   );
 }
-

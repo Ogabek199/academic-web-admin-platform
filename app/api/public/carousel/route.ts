@@ -1,40 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllPublicProfiles, getPublications } from '@/lib/backend/db';
 
-// Google Scholar'dan olingan realistik example ma'lumotlar
+// O'zbek tadqiqotchilari (taniqli tadqiqotchilar uchun)
+const uzbekResearchers = [
+  {
+    id: 'uzbek-1',
+    userId: 'uzbek-1',
+    name: 'Dr. Aziza Shodieva',
+    title: 'Filologiya fanlari doktori, dotsent',
+    affiliation: 'Toshkent davlat universiteti',
+    email: '',
+    bio: 'O\'zbek tili va adabiyoti sohasida tadqiqotchi',
+    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop',
+    researchInterests: ['O\'zbek tili', 'Adabiyotshunoslik', 'Filologiya'],
+    education: [],
+    contact: {},
+  },
+  {
+    id: 'uzbek-2',
+    userId: 'uzbek-2',
+    name: 'Prof. Jamshid Rahimov',
+    title: 'Fizika-matematika fanlari doktori, professor',
+    affiliation: 'Milliy universitet',
+    email: '',
+    bio: 'Matematik modellashtirish va hisoblash usullari bo\'yicha mutaxassis',
+    photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop',
+    researchInterests: ['Matematika', 'Hisoblash usullari', 'Modellashtirish'],
+    education: [],
+    contact: {},
+  },
+];
+
+// Qo'shimcha example profillar (eski)
 const exampleProfiles = [
-  {
-    id: 'example-1',
-    userId: 'example-1',
-    name: 'Dr. Andrew Ng',
-    title: 'Professor of Computer Science',
-    affiliation: 'Stanford University',
-    email: 'andrew@stanford.edu',
-    bio: 'Leading researcher in machine learning and AI',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
-    researchInterests: ['Machine Learning', 'Deep Learning', 'AI'],
-    education: [],
-    contact: {
-      website: 'https://www.andrewng.org',
-      googleScholar: 'https://scholar.google.com/citations?user=example1',
-    },
-  },
-  {
-    id: 'example-2',
-    userId: 'example-2',
-    name: 'Dr. Fei-Fei Li',
-    title: 'Professor of Computer Science',
-    affiliation: 'Stanford University',
-    email: 'feifei@stanford.edu',
-    bio: 'Pioneer in computer vision and AI',
-    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
-    researchInterests: ['Computer Vision', 'AI', 'Neural Networks'],
-    education: [],
-    contact: {
-      website: 'https://profiles.stanford.edu/fei-fei-li',
-      googleScholar: 'https://scholar.google.com/citations?user=example2',
-    },
-  },
+  ...uzbekResearchers,
   {
     id: 'example-3',
     userId: 'example-3',
@@ -111,18 +110,9 @@ export async function GET() {
     const profiles = getAllPublicProfiles();
     const publications = getPublications();
 
-    // Combine real profiles with examples if needed
-    let featuredProfiles = profiles
-      .filter(p => p.photo)
-      .slice(0, 5);
-    
-    // If not enough profiles, add examples
-    if (featuredProfiles.length < 3) {
-      featuredProfiles = [
-        ...featuredProfiles,
-        ...exampleProfiles.slice(0, 3 - featuredProfiles.length),
-      ];
-    }
+    // Haqiqiy profillar (masalan Abubakir) + 2 ta o'zbek tadqiqotchisi
+    const realFeatured = profiles.filter(p => p.photo).slice(0, 5);
+    const featuredProfiles = [...realFeatured, ...uzbekResearchers].slice(0, 6);
 
     // Get recent publications
     let recentPublications = publications

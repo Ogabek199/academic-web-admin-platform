@@ -1,6 +1,7 @@
 "use client";
 
 import PublicNavigation from "@/shared/components/PublicNavigation";
+import PublicFooter from "@/shared/components/PublicFooter";
 import ChatWidget from "@/shared/components/ChatWidget";
 import {
   GraduationCap,
@@ -13,87 +14,88 @@ import {
   Target,
   Zap,
   CheckCircle,
+  HelpCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/shared/ui/Button";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen flex flex-col bg-white">
       <PublicNavigation />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-6 shadow-lg">
-            <GraduationCap className="w-10 h-10 text-white" />
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#2563EB] rounded-2xl mb-5 shadow-sm">
+            <GraduationCap className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Platforma Haqida
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Platforma haqida
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Akademik tadqiqotlar, ilmiy nashrlar va statistika ma'lumotlarini boshqarish platformasi
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+            Tadqiqotchilar, olimlar va talabalar uchun zamonaviy ilmiy platforma
           </p>
         </div>
 
         {/* Website Haqida */}
-        <section className="mb-16">
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
+        <section className="mb-12 sm:mb-16">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 md:p-12">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <Globe className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-[#2563EB]/10 rounded-xl flex items-center justify-center">
+                <Globe className="w-6 h-6 text-[#2563EB]" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">Website Haqida</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Platforma haqida</h2>
             </div>
-            
+
             <div className="space-y-6 text-gray-700 leading-relaxed">
-              <p className="text-lg">
-                Bu platforma akademik tadqiqotlar, ilmiy nashrlar va statistika ma'lumotlarini 
-                boshqarish va ko'rsatish uchun yaratilgan zamonaviy veb-saytdir.
+              <p className="text-base sm:text-lg">
+                Bu platforma akademik tadqiqotlar, ilmiy nashrlar va statistika ma&apos;lumotlarini
+                boshqarish va ko&apos;rsatish uchun yaratilgan zamonaviy veb-saytdir.
               </p>
-              
+
               <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
+                <div className="bg-[#f8fafc] rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <Users className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-gray-900">Olimlar Profillari</h3>
+                    <Users className="w-6 h-6 text-[#2563EB]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Tadqiqotchilar profillari</h3>
                   </div>
-                  <p className="text-gray-700">
-                    Tadqiqotchilar o'z profil ma'lumotlarini, ilmiy yo'nalishlarini va 
-                    tadqiqot sohalarini ko'rsatish imkoniyatiga ega.
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    Tadqiqotchilar o&apos;z profil ma&apos;lumotlarini, ilmiy yo&apos;nalishlarini va
+                    tadqiqot sohalarini ko&apos;rsatish imkoniyatiga ega.
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 border border-green-100">
+                <div className="bg-[#f8fafc] rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <BookOpen className="w-6 h-6 text-green-600" />
-                    <h3 className="text-xl font-semibold text-gray-900">Ilmiy Nashrlar</h3>
+                    <BookOpen className="w-6 h-6 text-[#10b981]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Ilmiy nashrlar</h3>
                   </div>
-                  <p className="text-gray-700">
-                    Barcha ilmiy maqolalar, kitoblar va boshqa nashrlar tizimli 
-                    tarzda saqlanadi va ko'rsatiladi.
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    Barcha ilmiy maqolalar, kitoblar va boshqa nashrlar tizimli
+                    tarzda saqlanadi va ko&apos;rsatiladi.
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+                <div className="bg-[#f8fafc] rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <BarChart3 className="w-6 h-6 text-purple-600" />
-                    <h3 className="text-xl font-semibold text-gray-900">Statistika</h3>
+                    <BarChart3 className="w-6 h-6 text-[#8b5cf6]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Statistika</h3>
                   </div>
-                  <p className="text-gray-700">
-                    Barcha ma'lumotlar statistik ko'rinishda taqdim etiladi, 
-                    bu esa ma'lumotlarni tahlil qilishni osonlashtiradi.
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    Barcha ma&apos;lumotlar statistik ko&apos;rinishda taqdim etiladi,
+                    bu esa ma&apos;lumotlarni tahlil qilishni osonlashtiradi.
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-100">
+                <div className="bg-[#f8fafc] rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <MessageCircle className="w-6 h-6 text-yellow-600" />
-                    <h3 className="text-xl font-semibold text-gray-900">Aloqa</h3>
+                    <MessageCircle className="w-6 h-6 text-[#2563EB]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Aloqa</h3>
                   </div>
-                  <p className="text-gray-700">
-                    Foydalanuvchilar chat orqali platforma bilan bog'lanishi va 
-                    savollariga javob olishi mumkin.
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    Telegram orqali platforma bilan bog&apos;lanish va
+                    savollaringizga javob olishingiz mumkin.
                   </p>
                 </div>
               </div>
@@ -101,96 +103,123 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* FAQ */}
+        <section id="faq" className="mb-12 sm:mb-16 scroll-mt-20">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 md:p-12">
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-12 h-12 bg-[#2563EB]/10 rounded-xl flex items-center justify-center">
+                <HelpCircle className="w-6 h-6 text-[#2563EB]" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Savol-javob (FAQ)</h2>
+            </div>
+            <dl className="space-y-6">
+              <div>
+                <dt className="text-base font-semibold text-gray-900 mb-2">Platforma nima uchun?</dt>
+                <dd className="text-gray-600 text-sm sm:text-base">
+                  Tadqiqotchilar va olimlar o&apos;z profillarini, nashrlarini va statistikasini bitta joyda ko&apos;rsatish va boshqalarga topish imkoniyatini berish uchun.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-gray-900 mb-2">Admin panelga qanday kirish mumkin?</dt>
+                <dd className="text-gray-600 text-sm sm:text-base">
+                  Admin panelga kirish uchun Telegram orqali qo&apos;llab-quvvatlash bilan bog&apos;laning (@otaxonov_o17). Sizga login va parol yuboriladi.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-gray-900 mb-2">Profilimni qanday yangilayman?</dt>
+                <dd className="text-gray-600 text-sm sm:text-base">
+                  Admin panelga kiring, &quot;Profil boshqaruvi&quot; bo&apos;limiga o&apos;ting va ma&apos;lumotlaringizni tahrirlang yoki rasmingizni yuklang.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-gray-900 mb-2">Nashrlar qanday qo&apos;shiladi?</dt>
+                <dd className="text-gray-600 text-sm sm:text-base">
+                  Admin panelda &quot;Nashrlar&quot; bo&apos;limida &quot;Yangi nashr&quot; tugmasini bosing va sarlavha, mualliflar, jurnal, yil va sitatalarni kiriting.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
         {/* Admin Panel Haqida */}
-        <section className="mb-16">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-xl p-8 md:p-12 border border-gray-700">
+        <section className="mb-12 sm:mb-16">
+          <div className="bg-[#f8fafc] rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 md:p-12">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#2563EB] rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white">Admin Panel Haqida</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin panel haqida</h2>
             </div>
-            
-            <div className="space-y-6 text-gray-200 leading-relaxed">
-              <p className="text-lg text-gray-100">
-                Admin panel - bu platforma ma'lumotlarini boshqarish uchun maxsus 
-                boshqaruv panelidir. Faqat ruxsat etilgan foydalanuvchilar kirish huquqiga ega.
+
+            <div className="space-y-6 text-gray-700 leading-relaxed">
+              <p className="text-base sm:text-lg">
+                Admin panel — platforma ma&apos;lumotlarini boshqarish uchun maxsus boshqaruv paneli. Faqat ruxsat etilgan foydalanuvchilar kirish huquqiga ega.
               </p>
 
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 mb-6">
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-blue-400" />
-                  Admin Panelga Kirish
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Target className="w-5 h-5 text-[#2563EB]" />
+                  Admin panelga kirish
                 </h3>
-                <div className="space-y-3 text-gray-300">
+                <div className="space-y-3 text-gray-600">
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                    <p>
-                      Admin panelga kirish uchun chat orqali so'rov yuborishingiz kerak
-                    </p>
+                    <CheckCircle className="w-5 h-5 text-[#10b981] mt-0.5 flex-shrink-0" />
+                    <p>Telegram orqali qo&apos;llab-quvvatlash bilan bog&apos;laning (@otaxonov_o17)</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                    <p>
-                      Ismingiz, familiyangiz va Telegram username'ingizni kiriting
-                    </p>
+                    <CheckCircle className="w-5 h-5 text-[#10b981] mt-0.5 flex-shrink-0" />
+                    <p>Ismingiz va Telegram username&apos;ingizni yuboring</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                    <p>
-                      Admin sizga Telegram orqali login va parol yuboradi
-                    </p>
+                    <CheckCircle className="w-5 h-5 text-[#10b981] mt-0.5 flex-shrink-0" />
+                    <p>Admin sizga login va parol yuboradi</p>
                   </div>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <Zap className="w-6 h-6 text-yellow-400" />
-                    <h3 className="text-xl font-semibold text-white">Admin Imkoniyatlari</h3>
+                    <Zap className="w-6 h-6 text-[#8b5cf6]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Admin imkoniyatlari</h3>
                   </div>
-                  <ul className="space-y-2 text-gray-300">
+                  <ul className="space-y-2 text-gray-600 text-sm sm:text-base">
                     <li className="flex items-start space-x-2">
-                      <span className="text-blue-400">•</span>
-                      <span>Profil ma'lumotlarini boshqarish</span>
+                      <span className="text-[#2563EB]">•</span>
+                      <span>Profil ma&apos;lumotlarini boshqarish</span>
                     </li>
                     <li className="flex items-start space-x-2">
-                      <span className="text-blue-400">•</span>
-                      <span>Ilmiy nashrlarni qo'shish va tahrirlash</span>
+                      <span className="text-[#2563EB]">•</span>
+                      <span>Ilmiy nashrlarni qo&apos;shish va tahrirlash</span>
                     </li>
                     <li className="flex items-start space-x-2">
-                      <span className="text-blue-400">•</span>
-                      <span>Statistika ma'lumotlarini ko'rish</span>
+                      <span className="text-[#2563EB]">•</span>
+                      <span>Statistika ma&apos;lumotlarini ko&apos;rish</span>
                     </li>
                     <li className="flex items-start space-x-2">
-                      <span className="text-blue-400">•</span>
+                      <span className="text-[#2563EB]">•</span>
                       <span>Fayllarni yuklash va boshqarish</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-4">
-                    <Shield className="w-6 h-6 text-blue-400" />
-                    <h3 className="text-xl font-semibold text-white">Xavfsizlik</h3>
+                    <Shield className="w-6 h-6 text-[#2563EB]" />
+                    <h3 className="text-lg font-semibold text-gray-900">Xavfsizlik</h3>
                   </div>
-                  <ul className="space-y-2 text-gray-300">
+                  <ul className="space-y-2 text-gray-600 text-sm sm:text-base">
                     <li className="flex items-start space-x-2">
-                      <span className="text-green-400">✓</span>
+                      <span className="text-[#10b981]">✓</span>
                       <span>Faqat ruxsat etilgan foydalanuvchilar kirishi mumkin</span>
                     </li>
                     <li className="flex items-start space-x-2">
-                      <span className="text-green-400">✓</span>
+                      <span className="text-[#10b981]">✓</span>
                       <span>Xavfsiz autentifikatsiya tizimi</span>
                     </li>
                     <li className="flex items-start space-x-2">
-                      <span className="text-green-400">✓</span>
-                      <span>Barcha o'zgarishlar kuzatiladi</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <span className="text-green-400">✓</span>
-                      <span>Ma'lumotlar xavfsiz saqlanadi</span>
+                      <span className="text-[#10b981]">✓</span>
+                      <span>Ma&apos;lumotlar xavfsiz saqlanadi</span>
                     </li>
                   </ul>
                 </div>
@@ -201,16 +230,16 @@ export default function AboutPage() {
                   <Button
                     variant="primary"
                     size="lg"
-                    className="w-full sm:w-auto flex items-center justify-center"
+                    className="w-full sm:w-auto flex items-center justify-center bg-[#2563EB] hover:bg-[#1d4ed8]"
                   >
                     <Shield className="w-5 h-5 mr-2" />
-                    Admin Panelga Kirish
+                    Admin panelga kirish
                   </Button>
                 </Link>
-                <div className="flex-1 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                  <p className="text-sm text-blue-300">
-                    <strong className="text-blue-200">Eslatma:</strong> Admin panelga kirish uchun 
-                    chat orqali so'rov yuborishingiz va admin tomonidan ruxsat olishingiz kerak.
+                <div className="flex-1 bg-[#2563EB]/5 border border-[#2563EB]/20 rounded-xl p-4">
+                  <p className="text-sm text-gray-700">
+                    <strong className="text-[#2563EB]">Eslatma:</strong> Admin panelga kirish uchun
+                    Telegram orqali so&apos;rov yuborishingiz va admin tomonidan ruxsat olishingiz kerak.
                   </p>
                 </div>
               </div>
@@ -218,28 +247,29 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Qo'shimcha Ma'lumot */}
+        {/* Qo'shimcha ma'lumot */}
         <section>
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Qo'shimcha Ma'lumot</h2>
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 md:p-12">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Qo&apos;shimcha ma&apos;lumot</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl">
-                <div className="text-3xl font-bold text-blue-600 mb-2">100%</div>
-                <p className="text-gray-700">Xavfsizlik</p>
+              <div className="text-center p-6 bg-[#f8fafc] rounded-2xl border border-gray-200">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2563EB] mb-2">100%</div>
+                <p className="text-gray-600 text-sm sm:text-base">Xavfsizlik</p>
               </div>
-              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-blue-50 rounded-xl">
-                <div className="text-3xl font-bold text-green-600 mb-2">24/7</div>
-                <p className="text-gray-700">Mavjudlik</p>
+              <div className="text-center p-6 bg-[#f8fafc] rounded-2xl border border-gray-200">
+                <div className="text-2xl sm:text-3xl font-bold text-[#10b981] mb-2">24/7</div>
+                <p className="text-gray-600 text-sm sm:text-base">Mavjudlik</p>
               </div>
-              <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-                <div className="text-3xl font-bold text-purple-600 mb-2">Zamonaviy</div>
-                <p className="text-gray-700">Texnologiya</p>
+              <div className="text-center p-6 bg-[#f8fafc] rounded-2xl border border-gray-200">
+                <div className="text-2xl sm:text-3xl font-bold text-[#8b5cf6] mb-2">Zamonaviy</div>
+                <p className="text-gray-600 text-sm sm:text-base">Texnologiya</p>
               </div>
             </div>
           </div>
         </section>
       </main>
 
+      <PublicFooter />
       <ChatWidget />
     </div>
   );

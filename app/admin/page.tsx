@@ -1,27 +1,25 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  User, 
-  BookOpen, 
-  BarChart3, 
+import {
+  User,
+  BookOpen,
+  BarChart3,
   TrendingUp,
-  FileText,
   Plus,
-  Settings,
-  Sparkles
+  Eye,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 
 export default function AdminDashboard() {
-  const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState({
     profile: false,
     publications: 0,
     citations: 0,
+    profileViews: 0,
   });
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -49,29 +47,31 @@ export default function AdminDashboard() {
       }
 
       setUser(userData.user);
-      
+
       const publications = pubData.publications || [];
-      const totalCitations = publications.reduce((sum: number, p: any) => sum + (p.citations || 0), 0);
+      const totalCitations = publications.reduce(
+        (sum: number, p: any) => sum + (p.citations || 0),
+        0
+      );
 
       setStats({
         profile: !!profileData.profile,
         publications: publications.length,
         citations: totalCitations,
+        profileViews: profileData.profile ? 0 : 0, // kelajakda API orqali
       });
     } catch (error) {
       console.error('Error loading data:', error);
-      // Don't redirect on error, just show empty state
     } finally {
       setLoading(false);
     }
   };
 
-  // Prevent hydration mismatch
   if (!mounted || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
+      <div className="flex items-center justify-center min-h-[50vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#2563EB] border-t-transparent mx-auto mb-4"></div>
           <p className="text-gray-600">Yuklanmoqda...</p>
         </div>
       </div>
@@ -79,131 +79,127 @@ export default function AdminDashboard() {
   }
 
   if (!user) {
-    return null; // Will redirect via window.location
+    return null;
   }
 
-  const cards = [
+  const overviewCards = [
     {
-      title: 'Profil',
-      value: stats.profile ? 'To\'ldirilgan' : 'To\'ldirilmagan',
-      icon: User,
-      href: '/admin/profile',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-700',
-    },
-    {
-      title: 'Nashrlar',
+      title: 'Jami nashrlar',
       value: stats.publications,
       icon: BookOpen,
       href: '/admin/publications',
-      color: 'from-green-500 to-emerald-600',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-700',
-      hoverBg: 'hover:bg-green-50',
+      color: 'bg-[#2563EB]',
+      bgLight: 'bg-blue-50',
+      textColor: 'text-[#2563EB]',
     },
     {
-      title: 'Jami Sitatalar',
+      title: 'Jami sitatalar',
       value: stats.citations,
       icon: TrendingUp,
       href: '/admin/statistics',
-      color: 'from-purple-500 to-pink-600',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-700',
-      hoverBg: 'hover:bg-purple-50',
+      color: 'bg-[#10b981]',
+      bgLight: 'bg-emerald-50',
+      textColor: 'text-[#10b981]',
+    },
+    {
+      title: 'Profil holati',
+      value: stats.profile ? "To'ldirilgan" : "To'ldirilmagan",
+      icon: User,
+      href: '/admin/profile',
+      color: 'bg-[#8b5cf6]',
+      bgLight: 'bg-purple-50',
+      textColor: 'text-[#8b5cf6]',
     },
   ];
 
   const quickActions = [
     {
       title: 'Profilni yangilash',
-      description: 'Shaxsiy ma\'lumotlarni to\'ldiring',
+      description: 'Shaxsiy ma\'lumotlar, muassasa, soha',
       icon: User,
       href: '/admin/profile',
-      color: 'from-blue-500 to-cyan-500',
+      accent: 'border-[#2563EB] hover:bg-blue-50',
     },
     {
       title: 'Yangi nashr qo\'shish',
-      description: 'Ilmiy nashr ma\'lumotlarini kiriting',
+      description: 'Maqola, konferensiya, kitob',
       icon: Plus,
       href: '/admin/publications',
-      color: 'from-green-500 to-emerald-500',
+      accent: 'border-[#10b981] hover:bg-emerald-50',
     },
     {
       title: 'Statistikani ko\'rish',
-      description: 'Batafsil statistika va grafiklar',
+      description: 'Grafiklar va metrikalar',
       icon: BarChart3,
       href: '/admin/statistics',
-      color: 'from-purple-500 to-pink-500',
+      accent: 'border-[#8b5cf6] hover:bg-purple-50',
     },
   ];
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl shadow-xl p-8 md:p-12 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-        <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-4">
-            <Sparkles className="w-8 h-8" />
-            <h1 className="text-3xl md:text-4xl font-bold">Xush kelibsiz, {user?.username}!</h1>
-          </div>
-          <p className="text-xl text-white/90 max-w-2xl">
-            Ma&apos;lumotlaringizni boshqarish va yangilash uchun admin panelga xush kelibsiz
-          </p>
-        </div>
+      {/* Sarlavha */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          Xush kelibsiz, {user?.username}!
+        </h1>
+        <p className="mt-1 text-gray-600">
+          Ma&apos;lumotlaringizni boshqarish va yangilash
+        </p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {cards.map((card) => {
+      {/* Overview kartochkalar */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {overviewCards.map((card) => {
           const Icon = card.icon;
           return (
             <Link
               key={card.title}
               href={card.href}
-              className="group bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:bg-white"
+              className="group bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`${card.bgColor} p-3 rounded-xl group-hover:scale-110 transition-transform`}>
-                  <Icon className={`w-6 h-6 ${card.textColor}`} />
+              <div className="flex items-start justify-between">
+                <div className={`${card.bgLight} p-3 rounded-xl`}>
+                  <Icon className={`h-6 w-6 ${card.textColor}`} />
                 </div>
-                <div className={`w-12 h-12 bg-gradient-to-br ${card.color} rounded-lg opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-[#2563EB] group-hover:translate-x-1 transition-all" />
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">{card.title}</p>
-                <p className="text-3xl font-bold text-gray-900">{card.value}</p>
-              </div>
+              <p className="mt-4 text-sm font-medium text-gray-500">
+                {card.title}
+              </p>
+              <p className="mt-1 text-2xl sm:text-3xl font-bold text-gray-900">
+                {card.value}
+              </p>
             </Link>
           );
         })}
       </div>
 
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
-        <div className="flex items-center space-x-3 mb-6">
-          <Settings className="w-6 h-6 text-gray-700" />
-          <h2 className="text-2xl font-bold text-gray-900">Tezkor harakatlar</h2>
+      {/* Tezkor harakatlar */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Tezkor harakatlar
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Tez kirish uchun tugmalar
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           {quickActions.map((action) => {
             const Icon = action.icon;
             return (
               <Link
                 key={action.title}
                 href={action.href}
-                className="group p-6 rounded-xl border-2 border-gray-200 hover:border-transparent hover:shadow-lg transition-all duration-300 relative overflow-hidden"
+                className={`flex items-start gap-4 p-4 rounded-xl border-2 border-gray-100 ${action.accent} transition-colors`}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${action.color} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
-                <div className="relative z-10">
-                  <div className={`w-14 h-14 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-white transition-colors">
-                    {action.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 group-hover:text-white/90 transition-colors">
+                <div className="p-2.5 bg-gray-100 rounded-lg shrink-0">
+                  <Icon className="h-5 w-5 text-gray-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{action.title}</h3>
+                  <p className="text-sm text-gray-600 mt-0.5">
                     {action.description}
                   </p>
                 </div>
@@ -213,21 +209,26 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Tips Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">💡 Maslahat</h3>
-        <ul className="space-y-2 text-gray-700">
-          <li className="flex items-start">
-            <span className="mr-2">•</span>
-            <span>Avval profil ma&apos;lumotlarini to&apos;ldiring, keyin nashrlar qo&apos;shing</span>
+      {/* Maslahat */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
+          <Eye className="h-5 w-5 text-[#2563EB]" />
+          Maslahat
+        </h3>
+        <ul className="mt-3 space-y-2 text-gray-600 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="text-[#2563EB] mt-0.5">•</span>
+            Avval profil ma&apos;lumotlarini to&apos;ldiring, keyin nashrlar
+            qo&apos;shing.
           </li>
-          <li className="flex items-start">
-            <span className="mr-2">•</span>
-            <span>Profil rasmini yuklash orqali sahifangizni yanada chiroyli qiling</span>
+          <li className="flex items-start gap-2">
+            <span className="text-[#2563EB] mt-0.5">•</span>
+            Profil rasmini yuklash orqali sahifangizni yanada ishonchli
+            qiling.
           </li>
-          <li className="flex items-start">
-            <span className="mr-2">•</span>
-            <span>Barcha ma&apos;lumotlar public websiteda ko&apos;rinadi</span>
+          <li className="flex items-start gap-2">
+            <span className="text-[#2563EB] mt-0.5">•</span>
+            Barcha ma&apos;lumotlar public vebsaytda ko&apos;rinadi.
           </li>
         </ul>
       </div>

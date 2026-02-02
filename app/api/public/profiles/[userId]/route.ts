@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getProfileByUserId, getPublicationsByUserId } from '@/lib/backend/db';
+import { NextRequest, NextResponse } from "next/server";
+import { getProfileByUserId, getPublicationsByUserId } from "@/lib/backend/db";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
@@ -11,21 +11,17 @@ export async function GET(
     const publications = getPublicationsByUserId(userId);
 
     if (!profile) {
-      return NextResponse.json(
-        { error: 'Profil topilmadi' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Profil topilmadi" }, { status: 404 });
     }
 
     return NextResponse.json({
       profile,
       publications,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: error.message || 'Xatolik' },
+      { error: error instanceof Error ? error.message : "Xatolik" },
       { status: 500 }
     );
   }
 }
-
