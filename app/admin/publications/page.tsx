@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
-import { Plus, Trash2, ExternalLink, Search } from 'lucide-react';
+import { Plus, Trash2, ExternalLink, Search, Upload, FileText } from 'lucide-react';
 import { Publication } from '@/types';
 
 export default function AdminPublicationsPage() {
@@ -20,8 +20,11 @@ export default function AdminPublicationsPage() {
     type: 'article',
     doi: '',
     link: '',
+    fileUrl: '',
   });
   const [authorInput, setAuthorInput] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   useEffect(() => {
     loadPublications();
@@ -40,8 +43,30 @@ export default function AdminPublicationsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setUploadError(null);
 
     try {
+      let fileUrl = formData.fileUrl || '';
+
+      if (file) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+        uploadFormData.append('type', 'publication');
+
+        const uploadRes = await fetch('/api/admin/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (!uploadRes.ok) {
+          const err = await uploadRes.json();
+          throw new Error(err.error || 'Fayl yuklash xatolik');
+        }
+
+        const { url } = await uploadRes.json();
+        fileUrl = url;
+      }
+
       const publication: Publication = {
         id: formData.id || Date.now().toString(),
         title: formData.title || '',
@@ -52,6 +77,7 @@ export default function AdminPublicationsPage() {
         type: formData.type || 'article',
         doi: formData.doi,
         link: formData.link,
+        fileUrl: fileUrl || undefined,
       };
 
       const response = await fetch('/api/admin/publications', {
@@ -63,6 +89,7 @@ export default function AdminPublicationsPage() {
       if (!response.ok) throw new Error('Saqlash xatolik');
 
       setShowForm(false);
+      setFile(null);
       setFormData({
         title: '',
         authors: [],
@@ -72,9 +99,11 @@ export default function AdminPublicationsPage() {
         type: 'article',
         doi: '',
         link: '',
+        fileUrl: '',
       });
       loadPublications();
     } catch (error: any) {
+      setUploadError(error.message);
       alert(error.message);
     } finally {
       setLoading(false);
@@ -146,7 +175,10 @@ export default function AdminPublicationsPage() {
           <p className="mt-2 text-gray-600">Ilmiy nashrlar ro&apos;yxati — qo&apos;shish, tahrirlash, o&apos;chirish</p>
         </div>
         <Button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm);
+            if (showForm) setFile(null);
+          }}
           className="flex items-center justify-center bg-[#2563EB] hover:bg-[#1d4ed8] shrink-0"
         >
           <Plus className="h-5 w-5 mr-2" />
@@ -240,6 +272,41 @@ export default function AdminPublicationsPage() {
                 onChange={(e) => setFormData({ ...formData, link: e.target.value })}
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nashr fayli (PDF va boshqalar)</label>
+              <p className="text-xs text-gray-500 mb-2">O&apos;z nashringizni yuklang — fayl saqlanadi va tashrif buyuruvchilar yuklab olishi mumkin</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 focus:ring-2 focus:ring-[#2563EB]/20">
+                  <Upload className="h-4 w-4" />
+                  <span className="text-sm font-medium">Fayl tanlash</span>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    className="sr-only"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      setFile(f || null);
+                      setUploadError(null);
+                    }}
+                  />
+                </label>
+                {file && (
+                  <span className="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-lg">
+                    <FileText className="h-4 w-4" />
+                    {file.name}
+                    <button
+                      type="button"
+                      onClick={() => setFile(null)}
+                      className="text-gray-500 hover:text-red-600"
+                      aria-label="Olib tashlash"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+              </div>
+              {uploadError && <p className="mt-1.5 text-sm text-red-600">{uploadError}</p>}
+            </div>
             <Button type="submit" disabled={loading} className="flex items-center justify-center bg-[#2563EB] hover:bg-[#1d4ed8]">
               {loading ? 'Saqlanmoqda...' : 'Saqlash'}
             </Button>
@@ -294,12 +361,24 @@ export default function AdminPublicationsPage() {
                       <td className="px-4 lg:px-6 py-4 text-sm font-medium text-gray-900">{pub.citations ?? 0}</td>
                       <td className="px-4 lg:px-6 py-4 text-sm">
                         <div className="flex items-center gap-2">
+                          {pub.fileUrl && (
+                            <a
+                              href={pub.fileUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#2563EB] hover:text-[#1d4ed8]"
+                              title="Nashr faylini yuklab olish"
+                            >
+                              <FileText className="h-4 w-4" />
+                            </a>
+                          )}
                           {pub.link && (
                             <a
                               href={pub.link}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-[#2563EB] hover:text-[#1d4ed8]"
+                              title="Havola"
                             >
                               <ExternalLink className="h-4 w-4" />
                             </a>
@@ -327,6 +406,11 @@ export default function AdminPublicationsPage() {
                   <div className="flex items-center justify-between mt-3">
                     <span className="text-sm font-medium text-[#2563EB]">{pub.citations ?? 0} sitata</span>
                     <div className="flex items-center gap-2">
+                      {pub.fileUrl && (
+                        <a href={pub.fileUrl} target="_blank" rel="noopener noreferrer" className="text-[#2563EB]" title="Nashr fayli">
+                          <FileText className="h-4 w-4" />
+                        </a>
+                      )}
                       {pub.link && (
                         <a href={pub.link} target="_blank" rel="noopener noreferrer" className="text-[#2563EB]">
                           <ExternalLink className="h-4 w-4" />

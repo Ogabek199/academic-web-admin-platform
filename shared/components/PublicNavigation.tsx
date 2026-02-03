@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { GraduationCap, LogIn, Menu, X } from 'lucide-react';
+import { LogIn, Menu, X } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 
 const TELEGRAM_USERNAME = 'otaxonov_o17';
@@ -20,21 +21,36 @@ export default function PublicNavigation() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm" role="banner">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-[#2563EB] focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2563EB]"
+      >
+        Asosiy kontentga o&apos;tish
+      </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-18 gap-4">
-          {/* Logo */}
-          <Link href="/website" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-[#2563EB] rounded-xl flex items-center justify-center">
-              <GraduationCap className="h-6 w-6 text-white" />
-            </div>
+          {/* Logo — sayt logosi (Vercel o'rniga UzScholar) */}
+          <Link
+            href="/website"
+            className="flex items-center gap-2 shrink-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:ring-offset-2"
+            aria-label="UzScholar — asosiy sahifa"
+          >
+            <Image
+              src="/logo.svg"
+              alt="UzScholar logotipi"
+              width={40}
+              height={40}
+              priority
+              className="h-10 w-10 rounded-xl"
+            />
             <span className="text-lg font-bold text-gray-900 hidden sm:inline">
               UzScholar
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Asosiy navigatsiya">
             {navLinks.map((link) => {
               const isActive =
                 pathname === link.href ||
@@ -57,6 +73,7 @@ export default function PublicNavigation() {
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              aria-label="Telegram kanal (yangi oyna)"
             >
               Telegram
             </a>
@@ -90,8 +107,8 @@ export default function PublicNavigation() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col gap-1">
+          <div className="lg:hidden py-4 border-t border-gray-200" role="dialog" aria-label="Mobil menyu">
+            <nav className="flex flex-col gap-1" aria-label="Mobil navigatsiya">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}

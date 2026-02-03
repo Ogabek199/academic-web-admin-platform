@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
+    const type = (formData.get('type') as string) || 'profile'; // 'profile' | 'publication'
 
     if (!file) {
       return NextResponse.json({ error: 'Fayl yuklanmadi' }, { status: 400 });
@@ -25,15 +26,16 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'profiles');
+    const folder = type === 'publication' ? 'publications' : 'profiles';
+    const uploadsDir = join(process.cwd(), 'public', 'uploads', folder);
     await mkdir(uploadsDir, { recursive: true });
 
-    const filename = `${decoded.userId}-${Date.now()}-${file.name}`;
+    const filename = `${decoded.userId}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
     const filepath = join(uploadsDir, filename);
 
     await writeFile(filepath, buffer);
 
-    const url = `/uploads/profiles/${filename}`;
+    const url = `/uploads/${folder}/${filename}`;
 
     return NextResponse.json({ success: true, url });
   } catch (error: any) {

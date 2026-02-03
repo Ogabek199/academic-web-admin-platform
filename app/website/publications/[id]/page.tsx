@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Star, BookOpen, Play, Pause, Volume2 } from 'lucide-react';
+import { ArrowLeft, Calendar, Star, BookOpen, Play, Pause, Volume2, FileDown } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { Publication } from '@/types';
 
@@ -252,6 +252,19 @@ export default function PublicationDetailPage() {
                 </span>
               )}
             </div>
+
+            {/* Nashr faylini yuklab olish */}
+            {publication.fileUrl && (
+              <a
+                href={publication.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2563EB] text-white hover:bg-[#1d4ed8] transition-colors font-medium mb-6"
+              >
+                <FileDown className="h-4 w-4" />
+                Nashr faylini yuklab olish
+              </a>
+            )}
 
             {/* Ovozli o&apos;qish tugmalari */}
             {publication.content && (

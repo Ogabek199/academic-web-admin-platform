@@ -10,7 +10,9 @@ export default function WebsiteLayout({
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <PublicNavigation />
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1" role="main" tabIndex={-1}>
+        {children}
+      </main>
       <PublicFooter />
       <ChatWidget />
     </div>

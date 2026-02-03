@@ -34,6 +34,7 @@ export interface Publication {
   link?: string;
   type: 'article' | 'conference' | 'book' | 'thesis' | 'other';
   content?: string; // Nashrning to'liq matni
+  fileUrl?: string; // Yuklangan nashr fayli (PDF va boshqalar)
 }
 
 export interface Statistics {
