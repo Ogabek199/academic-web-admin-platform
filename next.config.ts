@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    // Prevent Next from picking an incorrect workspace root
+    // when other lockfiles exist elsewhere on the machine.
+    root: process.cwd(),
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
   async headers() {
     return [
       {
