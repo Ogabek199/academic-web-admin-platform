@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import {
   Search,
   Users,
@@ -11,6 +12,10 @@ import {
   TrendingUp,
   Calendar,
   Star,
+  ChevronRight,
+  Award,
+  Globe,
+  Zap,
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 
@@ -46,6 +51,20 @@ interface CarouselData {
 
 type SuggestionItem = { type: 'profile'; label: string; href: string } | { type: 'publication'; label: string; href: string };
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
 export default function HomePage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,6 +72,10 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchWrapRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -136,10 +159,14 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-[#f8fafc]">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#2563EB] border-t-transparent mx-auto mb-4" />
-          <p className="text-gray-600">Yuklanmoqda...</p>
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="rounded-full h-12 w-12 border-2 border-primary border-t-transparent mx-auto mb-4" 
+          />
+          <p className="text-slate-500 font-medium animate-pulse">UzScholar yuklanmoqda...</p>
         </div>
       </div>
     );
@@ -154,263 +181,357 @@ export default function HomePage() {
   const recentPubs = carouselData?.recentPublications ?? [];
 
   return (
-    <div className="bg-white">
-      {/* Hero + Search */}
-      <section className="relative bg-[#f8fafc] border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Tadqiqotchilar va ilmiy nashrlar
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Muallif, nashr yoki kalit soʻz boʻyicha qidiring — barcha maʼlumotlar bir joyda
-            </p>
-          </div>
-          <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3" ref={searchWrapRef}>
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none z-10" />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => {
-                    if (searchQuery.trim().length > 0) setShowSuggestions(true);
-                  }}
-                  placeholder="Muallif, nashr yoki kalit soʻz..."
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-colors text-base"
-                  autoComplete="off"
-                />
-                {showDropdown && (
-                  <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-xl border border-gray-200 shadow-lg z-[100] overflow-hidden">
-                    <div className="py-1 max-h-64 overflow-y-auto">
-                      {!carouselData ? (
-                        <div className="px-4 py-3 text-sm text-gray-500">Yuklanmoqda...</div>
-                      ) : suggestions.length === 0 ? (
-                        <div className="px-4 py-3 text-sm text-gray-500">Tavsiyalar topilmadi. Enter bosing — tadqiqotchilar sahifasida qidiruv bajariladi.</div>
-                      ) : (
-                        suggestions.map((item, i) => (
-                          <button
-                            key={`${item.type}-${i}`}
-                            type="button"
-                            onClick={() => onSelectSuggestion(item.href)}
-                            className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 text-sm text-gray-700 transition-colors"
-                          >
-                            {item.type === 'profile' ? (
-                              <Users className="h-4 w-4 text-[#2563EB] shrink-0" />
-                            ) : (
-                              <BookOpen className="h-4 w-4 text-[#10b981] shrink-0" />
-                            )}
-                            <span className="truncate">{item.label}</span>
-                          </button>
-                        ))
-                      )}
-                    </div>
+    <div className="relative isolate">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-12 pb-24 sm:pt-20 sm:pb-32">
+        <motion.div 
+          style={{ opacity, scale }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        >
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-sm font-medium mb-6"
+            >
+              <Zap className="h-4 w-4 fill-current" />
+              <span>O'zbekistonning eng yirik ilmiy tarmog'i</span>
+            </motion.div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-8"
+            >
+              Ilmiy natijalaringizni <br /> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                dunyoga ko'rsating
+              </span>
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-12 leading-relaxed"
+            >
+              UzScholar — tadqiqotchilar, olimlar va talabalar uchun yagona platforma. 
+              O'z ilmiy profilingizni yarating, nashrlaringizni kuzatib boring va h-indeksingizni oshiring.
+            </motion.p>
+
+            {/* Search Bar Refined */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="max-w-3xl mx-auto relative"
+              ref={searchWrapRef}
+            >
+              <form onSubmit={handleSearch} className="relative group">
+                <div className="absolute inset-x-0 -bottom-2 -top-2 bg-primary/5 rounded-[2rem] blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity" />
+                <div className="relative flex items-center p-2 rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200 group-focus-within:ring-primary/40 transition-all">
+                  <div className="flex-1 relative flex items-center pl-4">
+                    <Search className="h-5 w-5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setShowSuggestions(true);
+                      }}
+                      onFocus={() => {
+                        if (searchQuery.trim().length > 0) setShowSuggestions(true);
+                      }}
+                      placeholder="Muallif ismi, maqola sarlavhasi yoki kalit so'z..."
+                      className="w-full px-4 py-3 bg-transparent border-none focus:ring-0 text-slate-900 placeholder-slate-400 text-lg"
+                      autoComplete="off"
+                    />
                   </div>
-                )}
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                className="bg-[#2563EB] hover:bg-[#1d4ed8] shrink-0 flex items-center justify-center gap-2"
-              >
-                <Search className="h-5 w-5" />
-                Qidirish
-              </Button>
-            </div>
-          </form>
-          <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Link href="/website/researchers">
-              <Button variant="outline" size="md" className="border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]/10">
-                <Users className="h-4 w-4 mr-2" />
-                Tadqiqotchilarni koʻrish
-              </Button>
-            </Link>
-            <Link href="/website/publications">
-              <Button variant="outline" size="md" className="border-[#10b981] text-[#10b981] hover:bg-[#10b981]/10">
-                <BookOpen className="h-4 w-4 mr-2" />
-                Nashrlar
-              </Button>
-            </Link>
+                  <Button
+                    type="submit"
+                    className="rounded-xl px-8 py-4 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all font-bold"
+                  >
+                    Qidirish
+                  </Button>
+                </div>
+
+                <AnimatePresence>
+                  {showDropdown && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute inset-x-0 top-full mt-4 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 z-[100] overflow-hidden"
+                    >
+                      <div className="py-2 max-h-[400px] overflow-y-auto">
+                        {!carouselData ? (
+                          <div className="px-6 py-4 flex items-center gap-3 text-slate-500">
+                            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                            <span>Qidirilmoqda...</span>
+                          </div>
+                        ) : suggestions.length === 0 ? (
+                          <div className="px-6 py-8 text-center text-slate-500">
+                            <p className="font-medium">Natija topilmadi</p>
+                            <p className="text-sm mt-1">Boshqa kalit so'z bilan urinib ko'ring</p>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col">
+                            {suggestions.map((item, i) => (
+                              <button
+                                key={`${item.type}-${i}`}
+                                type="button"
+                                onClick={() => onSelectSuggestion(item.href)}
+                                className="w-full text-left px-6 py-4 hover:bg-slate-50/80 flex items-center gap-4 transition-colors border-b border-slate-100 last:border-none"
+                              >
+                                <div className={`p-2 rounded-lg ${item.type === 'profile' ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                                  {item.type === 'profile' ? <Users className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm font-semibold text-slate-900 line-clamp-1">{item.label}</p>
+                                  <p className="text-xs text-slate-400 capitalize">{item.type === 'profile' ? "Tadqiqotchi" : "Ilmiy nashr"}</p>
+                                </div>
+                                <ChevronRight className="h-4 w-4 text-slate-300" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </form>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Floating background elements */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -z-1" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px] -z-1" />
       </section>
 
-      {/* Overview stats */}
-      <section className="py-10 sm:py-12 border-b border-gray-200 bg-white">
+      {/* Modern Stats Section */}
+      <section className="py-24 relative overflow-hidden bg-white/40 backdrop-blur-sm border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-[#2563EB]/10">
-                  <Users className="h-6 w-6 text-[#2563EB]" />
+          <motion.div 
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"
+          >
+            {[
+              { label: 'Tadqiqotchilar', value: stats.totalProfiles, icon: Users, color: 'text-primary', bg: 'bg-primary/5' },
+              { label: 'Ilmiy nashrlar', value: stats.totalPublications, icon: BookOpen, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+              { label: 'Jami sitatalar', value: stats.totalCitations, icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
+            ].map((stat, i) => (
+              <motion.div 
+                key={i}
+                variants={fadeInUp}
+                className="flex flex-col items-center p-8 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 border border-slate-100 hover:scale-105 transition-transform"
+              >
+                <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color} mb-6`}>
+                  <stat.icon className="h-8 w-8" />
                 </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalProfiles}</p>
-                  <p className="text-sm text-gray-500">Tadqiqotchilar</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-[#10b981]/10">
-                  <BookOpen className="h-6 w-6 text-[#10b981]" />
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalPublications}</p>
-                  <p className="text-sm text-gray-500">Nashrlar</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-[#8b5cf6]/10">
-                  <TrendingUp className="h-6 w-6 text-[#8b5cf6]" />
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalCitations}</p>
-                  <p className="text-sm text-gray-500">Jami sitatalar</p>
-                </div>
-              </div>
-            </div>
-          </div>
+                <h3 className="text-4xl font-black text-slate-900 mb-2">
+                   {stat.value.toLocaleString()}
+                </h3>
+                <p className="text-slate-500 font-medium">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Featured researchers */}
+      {/* Featured Researchers with Glassmorphism Cards */}
       {featuredProfiles.length > 0 && (
-        <section className="py-12 sm:py-16 bg-[#f8fafc] border-t border-gray-200">
+        <section className="py-24 sm:py-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Taniqli tadqiqotchilar
-              </h2>
+            <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4 text-center md:text-left">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight">Taniqli tadqiqotchilar</h2>
+                <p className="text-lg text-slate-600">Eng ko'p iqtibos keltirilgan va faol maqolalarga ega bo'lgan olimlarimiz bilan tanishing.</p>
+              </div>
               <Link
                 href="/website/researchers"
-                className="text-sm font-medium text-[#2563EB] hover:underline flex items-center gap-1"
+                className="group inline-flex items-center gap-2 text-primary font-bold hover:text-primary/80 transition-all"
               >
-                Barchasi <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProfiles.slice(0, 6).map((profile) => (
-                <Link
-                  key={profile.id}
-                  href={`/website/profile/${profile.userId || profile.id}`}
-                  className="block bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-[#2563EB]/30 transition-all duration-200 h-full"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    {profile.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        loading='lazy'
-                        src={profile.photo}
-                        alt={profile.name}
-                        width={80}
-                        height={80}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-gray-100 mb-3"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-[#2563EB]/10 flex items-center justify-center text-2xl font-bold text-[#2563EB] mb-3">
-                        {profile.name.charAt(0)}
-                      </div>
-                    )}
-                    <h3 className="font-semibold text-gray-900">{profile.name}</h3>
-                    <p className="text-sm text-[#2563EB] font-medium mt-0.5">{profile.title}</p>
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{profile.affiliation}</p>
-                    {profile.researchInterests?.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1.5 justify-center">
-                        {profile.researchInterests.slice(0, 2).map((interest, i) => (
-                          <span
-                            key={i}
-                            className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-lg"
-                          >
-                            {interest}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Latest publications */}
-      {recentPubs.length > 0 && (
-        <section className="py-12 sm:py-16 bg-white border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Soʻnggi nashrlar
-              </h2>
-              <Link
-                href="/website/publications"
-                className="text-sm font-medium text-[#2563EB] hover:underline flex items-center gap-1"
-              >
-                Barchasi <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentPubs.slice(0, 6).map((pub) => (
-                <div
-                  key={pub.id}
-                  className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-[#10b981]/30 transition-all duration-200 h-full flex flex-col"
-                >
-                  <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2">{pub.title}</h3>
-                  <p className="text-sm text-gray-500 line-clamp-1">{pub.authors?.join(', ')}</p>
-                  <div className="mt-auto pt-4 flex items-center justify-between text-sm text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" /> {pub.year}
-                    </span>
-                    {pub.citations > 0 && (
-                      <span className="flex items-center gap-1 text-[#10b981] font-medium">
-                        <Star className="h-4 w-4" /> {pub.citations}
-                      </span>
-                    )}
-                  </div>
+                Barcha tadqiqotchilar
+                <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <ArrowRight className="h-5 w-5" />
                 </div>
+              </Link>
+            </div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {featuredProfiles.slice(0, 6).map((profile) => (
+                <motion.div key={profile.id} variants={fadeInUp}>
+                  <Link
+                    href={`/website/profile/${profile.userId || profile.id}`}
+                    className="group relative block h-full p-6 rounded-[2.5rem] bg-white/80 backdrop-blur-xl border border-slate-200 hover:border-primary/30 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 p-6">
+                       <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 group-hover:bg-primary/10 text-slate-300 group-hover:text-primary transition-colors">
+                          <Award className="h-6 w-6" />
+                       </div>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                      <div className="relative mb-6">
+                        <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {profile.photo ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            loading='lazy'
+                            src={profile.photo}
+                            alt={profile.name}
+                            className="relative w-28 h-28 rounded-[2rem] object-cover ring-4 ring-white group-hover:ring-primary/20 transition-all"
+                          />
+                        ) : (
+                          <div className="relative w-28 h-28 rounded-[2rem] bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-3xl font-bold text-primary ring-4 ring-white transition-all">
+                            {profile.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">{profile.name}</h3>
+                      <p className="text-sm font-semibold text-primary/80 mb-2">{profile.title}</p>
+                      <p className="text-sm text-slate-500 mb-6 px-4 line-clamp-2 min-h-[40px] leading-relaxed">{profile.affiliation}</p>
+                      
+                      {profile.researchInterests?.length > 0 && (
+                        <div className="flex flex-wrap gap-2 justify-center">
+                          {profile.researchInterests.slice(0, 2).map((interest, i) => (
+                            <span key={i} className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              {interest}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Interactive Features Section [NEW] */}
+      <section className="py-24 bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-5xl font-bold text-white mb-6">Nega aynan UzScholar?</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Sizning ilmiy faoliyatingiz uchun zamonaviy yechimlar</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { title: "Global Ko'rinish", desc: "Sizning ilmiy profilingiz dunyo miqyosidagi qidiruv tizimlari tomonidan indekslanadi.", icon: Globe },
+              { title: "Statistik Hisobotlar", desc: "Nashrlar, iqtiboslar va h-indeksingizni grafik ko'rinishida kuzatib boring.", icon: TrendingUp },
+              { title: "Akademik Hamkorlik", desc: "Sohangizdagi boshqa tadqiqotchilar bilan aloqa o'rnating va yangiliklarni ulashing.", icon: Users },
+            ].map((f, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ y: -10 }}
+                className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-sm"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-primary/20 text-primary flex items-center justify-center mb-6">
+                  <f.icon className="h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">{f.title}</h3>
+                <p className="text-slate-400 leading-relaxed">{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Publications List Redesign */}
+      {recentPubs.length > 0 && (
+        <section className="py-24 sm:py-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-end justify-between mb-16">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight">Eng so'nggi nashrlar</h2>
+                <p className="text-lg text-slate-600 italic">"Ilm - bu hech qachon tugamaydigan sayohat"</p>
+              </div>
+              <Link href="/website/publications" className="hidden sm:flex items-center gap-2 text-emerald-600 font-bold hover:gap-3 transition-all">
+                Barchasini o'qish <ChevronRight className="h-5 w-5" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {recentPubs.slice(0, 4).map((pub, i) => (
+                <motion.div 
+                  key={pub.id}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="group p-8 rounded-[2rem] bg-white border border-slate-100 hover:border-emerald-200 transition-all shadow-md hover:shadow-xl flex gap-6"
+                >
+                  <div className="hidden sm:flex flex-col items-center justify-center p-4 rounded-2xl bg-emerald-50 text-emerald-600 h-24 w-24 shrink-0">
+                    <Calendar className="h-6 w-6 mb-1" />
+                    <span className="text-sm font-black">{pub.year}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 leading-snug group-hover:text-emerald-600 transition-colors">
+                      {pub.title}
+                    </h3>
+                    <p className="text-slate-500 text-sm mb-4 line-clamp-1 font-medium">{pub.authors?.join(', ')}</p>
+                    <div className="flex items-center gap-6">
+                       {pub.citations > 0 && (
+                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold">
+                          <Star className="h-3.5 w-3.5 fill-current" />
+                          <span>{pub.citations} sitata</span>
+                        </div>
+                       )}
+                       <div className="text-xs text-slate-400 font-medium sm:hidden">
+                          Nashr yili: {pub.year}
+                       </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-12 text-center sm:hidden">
+               <Link href="/website/publications">
+                  <Button variant="outline" className="w-full rounded-2xl py-6 border-emerald-600 text-emerald-600">
+                    Barcha nashrlar
+                  </Button>
+               </Link>
             </div>
           </div>
         </section>
       )}
 
-      {/* CTA */}
-      <section className="py-12 sm:py-16 border-t border-gray-200 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-            Tadqiqotchilarni qidiring yoki nashrlar bilan tanishing
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Platforma haqida batafsil maʼlumot va savol-javoblar uchun quyidagi sahifalardan foydalaning.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/website/researchers">
-              <Button size="lg" className="bg-[#2563EB] hover:bg-[#1d4ed8] flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Tadqiqotchilarni koʻrish
-              </Button>
-            </Link>
-            <Link href="/website/publications">
-              <Button variant="outline" size="lg" className="border-[#10b981] text-[#10b981] hover:bg-[#10b981]/10 flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
-                Nashrlar
-              </Button>
-            </Link>
-            <Link href="/about">
-              <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100">
-                Platforma haqida
-              </Button>
-            </Link>
-          </div>
+      {/* Modern High-Impact CTA */}
+      <section className="py-24 px-4">
+        <div className="max-w-5xl mx-auto rounded-[3rem] bg-gradient-to-br from-primary to-accent p-12 sm:p-20 relative overflow-hidden shadow-2xl shadow-primary/40">
+           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_-20%,rgba(255,255,255,0.4),transparent)]" />
+           <div className="relative z-10 text-center text-white">
+              <h2 className="text-3xl sm:text-5xl font-black mb-8">O'z ilmiy salohiyatingizni <br /> biz bilan oshiring</h2>
+              <p className="text-white/80 text-lg sm:text-xl max-w-2xl mx-auto mb-12">
+                Hoziroq ro'yxatdan o'ting va ilmiy hamjamiyatning bir qismiga aylaning. 
+                Sizning natijalaringiz munosib etirof uchun yaratilgan.
+              </p>
+              <div className="flex flex-wrap justify-center gap-6">
+                <Link href="/admin/login">
+                  <Button className="bg-white text-primary hover:bg-white/90 scale-110 px-10 py-6 rounded-2xl text-lg font-bold">
+                    Ishni boshlash
+                  </Button>
+                </Link>
+                <Link href="/about">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-10 py-6 rounded-2xl text-lg font-bold backdrop-blur-sm">
+                    Batafsil ma'lumot
+                  </Button>
+                </Link>
+              </div>
+           </div>
         </div>
       </section>
     </div>
   );
 }
+

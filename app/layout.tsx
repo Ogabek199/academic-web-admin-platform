@@ -13,23 +13,24 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://uzscholar.uz";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "UzScholar — Tadqiqotchilar va ilmiy nashrlar platformasi",
+    default: "UzScholar — O'zbekistonning yetakchi ilmiy platformasi",
     template: "%s | UzScholar",
   },
   description:
-    "Oʻzbekiston tadqiqotchilari, olimlar va talabalar uchun ilmiy profil, nashrlar, sitatalar va tadqiqot statistikasi. UzScholar — zamonaviy akademik platforma.",
+    "UzScholar — Oʻzbekiston tadqiqotchilari, olimlar va talabalar uchun yagona ilmiy ekotizim. Ilmiy profillar, nashrlar statistikasi, sitatalar va akademik hamkorlik.",
   keywords: [
     "UzScholar",
-    "akademik profil",
+    "ilmiy platforma",
+    "tadqiqotchi profili",
+    "O'zbekiston olimlari",
     "ilmiy nashrlar",
-    "tadqiqotchilar",
+    "h-indeks",
     "sitatalar",
-    "tadqiqot",
-    "Oʻzbekiston",
-    "research",
-    "publications",
+    "akademik reyting",
+    "Uzbekistan science",
+    "researchers in Uzbekistan",
   ],
-  authors: [{ name: "UzScholar", url: baseUrl }],
+  authors: [{ name: "UzScholar Team", url: baseUrl }],
   creator: "UzScholar",
   publisher: "UzScholar",
   formatDetection: { email: false, address: false, telephone: false },
@@ -39,24 +40,30 @@ export const metadata: Metadata = {
     url: baseUrl,
     siteName: "UzScholar",
     title: "UzScholar — Tadqiqotchilar va ilmiy nashrlar platformasi",
-    description: "Tadqiqotchilar, olimlar va talabalar uchun ilmiy profil, nashrlar va statistika.",
-    images: [{ url: "/logo.svg", width: 512, height: 512, alt: "UzScholar logo" }],
+    description: "Oʻzbekistonning barcha olimlari va tadqiqotchilari bir joyda. Ilmiy natijalaringizni dunyoga ko'rsating.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "UzScholar - Academic Platform" }],
   },
   twitter: {
-    card: "summary",
-    title: "UzScholar — Tadqiqotchilar va ilmiy nashrlar platformasi",
-    description: "Tadqiqotchilar, olimlar va talabalar uchun ilmiy platforma.",
+    card: "summary_large_image",
+    title: "UzScholar — Ilmiy nashrlar va tadqiqotchilar platformasi",
+    description: "O'zbekiston ilmiy hamjamiyati uchun zamonaviy raqamli platforma.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: { canonical: baseUrl },
-  category: "education",
+  category: "Science & Education",
   icons: {
-    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
-    shortcut: "/logo.svg",
+    icon: [{ url: "/favicon.ico" }, { url: "/logo.svg", type: "image/svg+xml" }],
     apple: "/logo.svg",
   },
 };
@@ -64,21 +71,34 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#2563EB",
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "UzScholar",
-  description: "Tadqiqotchilar va ilmiy nashrlar platformasi",
-  url: baseUrl,
-  inLanguage: "uz",
-  potentialAction: {
+  "@type": "EducationalOrganization",
+  "name": "UzScholar",
+  "alternateName": "O'zbekiston Ilmiy Nashrlar Platformasi",
+  "description": "O'zbekiston tadqiqotchilari va ilmiy nashrlari uchun yagona ma'lumotlar bazasi",
+  "url": baseUrl,
+  "logo": `${baseUrl}/logo.svg`,
+  "sameAs": [
+    "https://facebook.com/uzscholar",
+    "https://t.me/uzscholar",
+    "https://linkedin.com/company/uzscholar"
+  ],
+  "potentialAction": {
     "@type": "SearchAction",
-    target: { "@type": "EntryPoint", urlTemplate: `${baseUrl}/website?q={search_term_string}` },
-    "query-input": "required name=search_term_string",
-  },
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
 };
 
 export default function RootLayout({
@@ -87,16 +107,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uz" className={inter.variable} suppressHydrationWarning>
+    <html lang="uz" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-white antialiased" suppressHydrationWarning>
-        {children}
+      <body className="min-h-screen bg-white text-slate-900 antialiased font-sans selection:bg-blue-100 selection:text-blue-900" suppressHydrationWarning>
+        <div className="bg-mesh min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );
 }
+
