@@ -61,6 +61,7 @@ export default function PublicFooter() {
             </ul>
           </div>
 
+          {/* d */}
           <div>
             <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Yordam
