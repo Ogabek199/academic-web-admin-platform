@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { Profile, Publication } from '@/types';
 
-const DATA_DIR = path.join(process.cwd(), 'data');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const PROFILES_FILE = path.join(DATA_DIR, 'profiles.json');
-const PUBLICATIONS_FILE = path.join(DATA_DIR, 'publications.json');
+const DATA_DIR = path.resolve(process.cwd(), 'data');
+const USERS_FILE = path.resolve(DATA_DIR, 'users.json');
+const PROFILES_FILE = path.resolve(DATA_DIR, 'profiles.json');
+const PUBLICATIONS_FILE = path.resolve(DATA_DIR, 'publications.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -145,5 +145,66 @@ export function searchProfiles(query: string): UserProfile[] {
       interest.toLowerCase().includes(lowerQuery)
     )
   );
+}
+
+export function getStatistics(): any {
+  const publications = getPublications();
+  
+  const totalPublications = publications.length;
+  const totalCitations = publications.reduce((sum, p) => sum + (p.citations || 0), 0);
+  
+  // Calculate h-index
+  const sortedByCitations = [...publications]
+    .sort((a, b) => (b.citations || 0) - (a.citations || 0));
+  let hIndex = 0;
+  for (let i = 0; i < sortedByCitations.length; i++) {
+    if ((sortedByCitations[i].citations || 0) >= i + 1) {
+      hIndex = i + 1;
+    } else {
+      break;
+    }
+  }
+  
+  // Calculate i10-index
+  const i10Index = publications.filter(p => (p.citations || 0) >= 10).length;
+  
+  // Citations by year
+  const citationsByYearMap = new Map<number, number>();
+  publications.forEach(pub => {
+    const year = pub.year;
+    citationsByYearMap.set(year, (citationsByYearMap.get(year) || 0) + (pub.citations || 0));
+  });
+  const citationsByYear = Array.from(citationsByYearMap.entries())
+    .map(([year, citations]) => ({ year, citations }))
+    .sort((a, b) => a.year - b.year);
+  
+  // Publications by year
+  const publicationsByYearMap = new Map<number, number>();
+  publications.forEach(pub => {
+    const year = pub.year;
+    publicationsByYearMap.set(year, (publicationsByYearMap.get(year) || 0) + 1);
+  });
+  const publicationsByYear = Array.from(publicationsByYearMap.entries())
+    .map(([year, count]) => ({ year, count }))
+    .sort((a, b) => a.year - b.year);
+  
+  // Citations by type
+  const citationsByTypeMap = new Map<string, number>();
+  publications.forEach(pub => {
+    const type = pub.type || 'article';
+    citationsByTypeMap.set(type, (citationsByTypeMap.get(type) || 0) + (pub.citations || 0));
+  });
+  const citationsByType = Array.from(citationsByTypeMap.entries())
+    .map(([type, count]) => ({ type, count }));
+    
+  return {
+    totalPublications,
+    totalCitations,
+    hIndex,
+    i10Index,
+    citationsByYear,
+    publicationsByYear,
+    citationsByType,
+  };
 }
 
