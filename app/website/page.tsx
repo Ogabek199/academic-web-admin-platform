@@ -183,7 +183,7 @@ export default function HomePage() {
   return (
     <div className="relative isolate">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-24 sm:pt-20 sm:pb-32">
+      <section className="relative pt-12 pb-24 sm:pt-20 sm:pb-32">
         <motion.div 
           style={{ opacity, scale }}
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
@@ -305,8 +305,10 @@ export default function HomePage() {
         </motion.div>
 
         {/* Floating background elements */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -z-1" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px] -z-1" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px]" />
+        </div>
       </section>
 
       {/* Modern Stats Section */}
@@ -342,82 +344,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Researchers with Glassmorphism Cards */}
-      {featuredProfiles.length > 0 && (
-        <section className="py-24 sm:py-32">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4 text-center md:text-left">
-              <div className="max-w-2xl">
-                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight">Taniqli tadqiqotchilar</h2>
-                <p className="text-lg text-slate-600">Eng ko'p iqtibos keltirilgan va faol maqolalarga ega bo'lgan olimlarimiz bilan tanishing.</p>
-              </div>
-              <Link
-                href="/website/researchers"
-                className="group inline-flex items-center gap-2 text-primary font-bold hover:text-primary/80 transition-all"
-              >
-                Barcha tadqiqotchilar
-                <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-              </Link>
-            </div>
-            
-            <motion.div 
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {featuredProfiles.slice(0, 6).map((profile) => (
-                <motion.div key={profile.id} variants={fadeInUp}>
-                  <Link
-                    href={`/website/profile/${profile.userId || profile.id}`}
-                    className="group relative block h-full p-6 rounded-[2.5rem] bg-white/40 backdrop-blur-md border border-white/50 hover:border-primary/30 transition-all shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 p-6">
-                       <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 group-hover:bg-primary/10 text-slate-300 group-hover:text-primary transition-colors">
-                          <Award className="h-6 w-6" />
-                       </div>
-                    </div>
-                    <div className="flex flex-col items-center text-center">
-                      <div className="relative mb-6">
-                        <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        {profile.photo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            loading='lazy'
-                            src={profile.photo}
-                            alt={profile.name}
-                            className="relative w-28 h-28 rounded-[2rem] object-cover ring-4 ring-white group-hover:ring-primary/20 transition-all"
-                          />
-                        ) : (
-                          <div className="relative w-28 h-28 rounded-[2rem] bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-3xl font-bold text-primary ring-4 ring-white transition-all">
-                            {profile.name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">{profile.name}</h3>
-                      <p className="text-sm font-semibold text-primary/80 mb-2">{profile.title}</p>
-                      <p className="text-sm text-slate-500 mb-6 px-4 line-clamp-2 min-h-[40px] leading-relaxed">{profile.affiliation}</p>
-                      
-                      {profile.researchInterests?.length > 0 && (
-                        <div className="flex flex-wrap gap-2 justify-center">
-                          {profile.researchInterests.slice(0, 2).map((interest, i) => (
-                            <span key={i} className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                              {interest}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      )}
 
       {/* Interactive Features Section [NEW] */}
       <section className="py-24 bg-slate-900 relative overflow-hidden">

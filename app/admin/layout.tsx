@@ -142,11 +142,10 @@ export default function AdminLayout({
               key={item.href}
               href={item.href}
               onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-[#2563EB] text-white shadow-sm'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-              }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive
+                ? 'bg-[#2563EB] text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
             >
               <Icon className="h-5 w-5 shrink-0" />
               {item.label}
@@ -210,9 +209,8 @@ export default function AdminLayout({
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white border-r border-gray-200 shadow-xl z-50 flex flex-col transform transition-transform duration-200 ease-out lg:hidden ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white border-r border-gray-200 shadow-xl z-50 flex flex-col transform transition-transform duration-200 ease-out lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <SidebarContent />
       </aside>
