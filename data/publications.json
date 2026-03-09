@@ -50,123 +50,33 @@
   {
     "id": "pub_004",
     "userId": "1766867815330",
-    "title": "O'zbekistonda kiberxavfsizlik: xavf-xatarlar va muhofaza qilish strategiyalari",
+    "title": "Global iqlim o'zgarishi sharoitida O'rta Osiyo suv resurslarini boshqarish",
     "authors": [
-      "J. Abdullayev"
+      "A. Hamdamov"
     ],
-    "journal": "Axborot xavfsizligi",
-    "year": 2023,
-    "citations": 40,
+    "journal": "Ekologiya xabarnomasi",
+    "year": 2024,
+    "citations": 9,
     "type": "article",
-    "doi": "10.101/uz.cyber.2023.09",
-    "link": "https://cyber.uz/publications/2023-strategies",
-    "content": "ANNOTATSIYA\n\nKiberxavfsizlikni ta'minlashda qonunchilik bazasini mustahkamlash va texnik himoya choralarini kuchaytirish masalalari yoritilgan."
+    "doi": "10.101/uz.eco.2024.03",
+    "link": "https://eco.uz/journals/water-management",
+    "content": "ANNOTATSIYA\n\nMaqolada O'rta Osiyoda muzliklarning erishi va uning daryolar oqimiga ta'siri matematik modellashtirish yordamida ko'rsatib o'tilgan."
   },
   {
     "id": "pub_005",
     "userId": "1766867815330",
-    "title": "Sun'iy intellekt yordamida yurak-qon tomir kasalliklarini erta tashxislash",
+    "title": "Tibbiyotda nano-texnologiyalar: saraton kasalligini erta aniqlash usullari",
     "authors": [
-      "D. Ahmedov",
-      "S. Sultanova"
+      "D. Alimov",
+      "F. Toshmatov"
     ],
-    "journal": "O'zbekiston tibbiyot jurnali",
-    "year": 2024,
-    "citations": 28,
-    "type": "article",
-    "doi": "10.101/med.uz.2024.cardio",
-    "link": "https://medjurnal.uz/diagnostics/ai-cardio",
-    "content": "ANNOTATSIYA\n\nTibbiyotda neyron tarmoqlaridan foydalanib EKG natijalarini tahlil qilish va patologiyalarni 94% aniqlikda topish imkoniyatlari o'rganilgan."
-  },
-  {
-    "id": "pub_006",
-    "userId": "1766867815330",
-    "title": "Quyosh panellari samaradorligini oshirishda nanomateriallardan foydalanish",
-    "authors": [
-      "B. Yusupov",
-      "F. To'rayev"
-    ],
-    "journal": "Muqobil energiya manbalari",
+    "journal": "Nazariy va klinik tibbiyot",
     "year": 2023,
-    "citations": 12,
+    "citations": 31,
     "type": "article",
-    "doi": "10.101/solar.uz.2023.nano",
-    "link": "https://energy.uz/nano-solar",
-    "content": "ANNOTATSIYA\n\nMaqolada fotoelektrik elementlarda nanostrukturali materiallarni qo'llash orqali energiya olish koeffitsientini yaxshilash usullari tahlil qilingan."
-  },
-  {
-    "id": "pub_007",
-    "userId": "1766867815330",
-    "title": "O'zbek tili uchun korpus lingvistikasi va avtomatik annotatsiyalash",
-    "authors": [
-      "Z. Toshmetova"
-    ],
-    "journal": "Filologiya masalalari",
-    "year": 2025,
-    "citations": 5,
-    "type": "article",
-    "doi": "10.101/uz.linguo.2025.02",
-    "link": "https://uzcorpus.uz/publications/annotation-methods",
-    "content": "ANNOTATSIYA\n\nO'zbek tilining milliy korpusini yaratishda morfologik annotatsiyalashni avtomatlashtirish algoritmlari va ularni amaliyotda qo'llash natijalari berilgan."
-  },
-  {
-    "id": "pub_008",
-    "userId": "1766867815330",
-    "title": "Smart City konsepsiyasi: Toshkent shahri misolida transport boshqaruvi",
-    "authors": [
-      "A. Umirzoqov"
-    ],
-    "journal": "Urbanistika va arxitektura",
-    "year": 2024,
-    "citations": 14,
-    "type": "article",
-    "doi": "10.101/urban.uz.2024.03",
-    "link": "https://urban.uz/smart-transport-tashkent",
-    "content": "ANNOTATSIYA\n\nIntellektual transport tizimlarini Toshkent shahriga joriy etish orqali tirbandliklarni kamaytirish va jamoat transporti samaradorligini oshirish bo'yicha takliflar keltirilgan."
-  },
-  {
-    "id": "pub_009",
-    "userId": "1766867815330",
-    "title": "Masofaviy ta'limda gamifikatsiya elementlari va ularning samaradorligi",
-    "authors": [
-      "E. Ergashev"
-    ],
-    "journal": "Zamonaviy ta'lim",
-    "year": 2023,
-    "citations": 11,
-    "type": "article",
-    "doi": "10.101/uz.edu.2023.game",
-    "link": "https://modern-edu.uz/gamification-online",
-    "content": "ANNOTATSIYA\n\nOnlayn kurslarda o'yin elementlarini qo'llash orqali talabalarning motivatsiyasini oshirish va o'quv materialini o'zlashtirish darajasini yaxshilash tahlil qilingan."
-  },
-  {
-    "id": "pub_010",
-    "userId": "1766867815330",
-    "title": "O'zbekistonning innovatsion rivojlanish indeksi: tahlil va prognozlar",
-    "authors": [
-      "F. Ismoilov",
-      "L. Karimov"
-    ],
-    "journal": "Ilm-fan va innovatsion rivojlanish",
-    "year": 2024,
-    "citations": 7,
-    "type": "article",
-    "doi": "10.101/uz.innovation.2024.04",
-    "link": "https://mininnovation.uz/reports/index-2024",
-    "content": "ANNOTATSIYA\n\nMaqolada O'zbekistonning jahon innovatsion indeksidagi o'rni tahlil qilinib, kelgusi 5 yillikdagi rivojlanish tendentsiyalari bashorat qilingan."
-  },
-  {
-    "id": "1770059613910",
-    "title": "Interview Savollar ",
-    "authors": [],
-    "journal": "",
-    "year": 2026,
-    "citations": 0,
-    "type": "article",
-    "doi": "",
-    "link": "",
-    "fileUrl": "/uploads/publications/1767000000000-1770059613880-__.pdf",
-    "userId": "1767000000000"
+    "doi": "10.101/uz.med.2023.09",
+    "link": "https://tma.uz/scientific-journal/nanomedicine",
+    "content": "ANNOTATSIYA\n\nNano-zarrachalar yordamida o'simta hujayralarini maqsadli aniqlash va ularga dori yetkazib berishning yangi mexanizmlari bayon etilgan."
   },
   {
     "id": "pub_real_001",
@@ -197,7 +107,7 @@
     "type": "article",
     "doi": "10.4781/uij.2025.04.reg",
     "link": "https://universaljurnal.uz/archive/2025/ai-regulation",
-    "content": "ANNOTATSIYA\n\nMaqolada raqamli iqtisodiyot sharoitida SI texnologiyalarini huquqiy tartibga solishning dolzarb muammolari ko‘rib chiqiladi. Innovatsion rivojlanish va axborot xavfsizligi o‘rtasidagi oltin muvozanatni topish bo‘yicha takliflar ilgari suriladi.\n\nMUHOKAMA\n\nRaqamli transformatsiya jarayonida qonunchilik texnologiyalar tezligiga moslashishi shart. O‘zbekiston tajribasida 'Regulyator qumdonlari' (Regulatory Sandboxes) tushunchasini keng joriy etish taklif etiladi. Bu esa startaplarga yangi yechimlarni xavfsiz muhitda sinab ko‘rish imkonini beradi.\n\nXULOSA\n\nHuquqiy bazaning takomillashishi investorlar ishonchini oshiradi va SI sohasiga to‘g‘ridan-to‘g‘ri investitsiyalar oqimini ko‘paytiradi."
+    "content": "ANNOTATSIYA\n\nMaqolada raqamli iqtisodiyot sharoitida SI texnologiyalarini huquqiy tartibga solishning dolzarb muammolari ko‘rib chiqiladi. Innovatsion rivojlanish va axborot xavfsizligi o‘rtasidagi oltin muvozanatni find topish bo‘yicha takliflar ilgari suriladi.\n\nMUHOKAMA\n\nRaqamli transformatsiya jarayonida qonunchilik texnologiyalar tezligiga moslashishi shart. O‘zbekiston tajribasida 'Regulyator qumdonlari' (Regulatory Sandboxes) tushunchasini keng joriy etish taklif etiladi. Bu esa startaplarga yangi yechimlarni xavfsiz muhitda sinab ko‘rish imkonini beradi.\n\nXULOSA\n\nHuquqiy bazaning takomillashishi investorlar ishonchini oshiradi va SI sohasiga to‘g‘ridan-to‘g‘ri investitsiyalar oqimini ko‘paytiradi."
   },
   {
     "id": "pub_real_003",

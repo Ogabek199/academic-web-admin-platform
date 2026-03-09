@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
-import { Save, Upload, X } from 'lucide-react';
+import { Save, Upload, X, User, Plus, Trash2 } from 'lucide-react';
 import { Profile } from '@/types';
+import { motion } from 'framer-motion';
 
 export default function AdminProfilePage() {
   const router = useRouter();
@@ -43,13 +44,11 @@ export default function AdminProfilePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Faqat rasm fayllari yuklash mumkin');
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert('Rasm hajmi 5MB dan katta bo\'lmasligi kerak');
       return;
@@ -82,11 +81,8 @@ export default function AdminProfilePage() {
       alert(error.message || 'Rasm yuklashda xatolik yuz berdi');
     } finally {
       setUploading(false);
-      // Reset input
       const input = document.getElementById('photo-upload-input') as HTMLInputElement;
-      if (input) {
-        input.value = '';
-      }
+      if (input) input.value = '';
     }
   };
 
@@ -114,7 +110,7 @@ export default function AdminProfilePage() {
         body: JSON.stringify(profile),
       });
 
-      if (!response.ok) throw new Error('Saqlash xatolik');
+      if (!response.ok) throw new Error('Saqlashda xatolik yuz berdi');
 
       alert('Profil muvaffaqiyatli saqlandi!');
       router.refresh();
@@ -166,30 +162,42 @@ export default function AdminProfilePage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Profil boshqaruvi</h1>
-        <p className="mt-2 text-gray-600">Shaxsiy ma&apos;lumotlarni yangilang va saqlang</p>
+    <div className="max-w-5xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Profilni boshqarish</h1>
+          <p className="mt-1 text-slate-500 font-medium font-inter">Shaxsiy brendingiz va akademik ma'lumotlaringiz</p>
+        </div>
+        <Button 
+          onClick={handleSubmit} 
+          disabled={loading}
+          className="h-12 px-8 rounded-2xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+        >
+          <Save className="h-5 w-5 mr-2" />
+          {loading ? 'Saqlanmoqda...' : 'O\'zgarishlarni saqlash'}
+        </Button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Photo Upload */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Profil rasmi</h2>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            {formData.photo ? (
-              <img
-                src={formData.photo}
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-              />
-            ) : (
-              <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-400">Rasm yo&apos;q</span>
-              </div>
-            )}
-            <div>
-              <label htmlFor="photo-upload-input" className="cursor-pointer">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column: Avatar & Basic Info */}
+        <div className="lg:col-span-1 space-y-8">
+          <div className="bg-white rounded-3xl border border-slate-200/60 p-8 shadow-sm text-center">
+            <div className="relative inline-block group">
+              {formData.photo ? (
+                <div className="relative h-48 w-48 mx-auto rounded-full p-2 border-2 border-primary/20 bg-slate-50">
+                   <img
+                    src={formData.photo}
+                    alt="Profile"
+                    className="w-full h-full rounded-full object-cover shadow-inner"
+                  />
+                </div>
+              ) : (
+                <div className="w-48 h-48 rounded-full bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center mx-auto transition-colors group-hover:border-primary/40">
+                  <User className="h-16 w-16 text-slate-300" />
+                </div>
+              )}
+              
+              <label htmlFor="photo-upload-input" className="absolute bottom-2 right-2 cursor-pointer group">
                 <input
                   id="photo-upload-input"
                   type="file"
@@ -198,178 +206,184 @@ export default function AdminProfilePage() {
                   className="hidden"
                   disabled={uploading}
                 />
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={uploading}
-                  className="flex items-center justify-center"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('photo-upload-input')?.click();
-                  }}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  {uploading ? 'Yuklanmoqda...' : 'Rasm yuklash'}
-                </Button>
+                <div className="h-12 w-12 bg-primary text-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transform transition-transform group-hover:scale-110 active:scale-95 duration-200">
+                  <Upload className="h-5 w-5" />
+                </div>
               </label>
             </div>
+            
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-slate-900">{formData.name || 'Ismingiz'}</h3>
+              <p className="text-sm font-medium text-slate-500 mt-1">{formData.title || 'Lavozimingiz'}</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/20">
+            <h3 className="text-lg font-bold mb-4">Eslatma</h3>
+            <p className="text-sm text-slate-300 font-medium leading-relaxed">
+              Bu yerda kiritilgan barcha ma'lumotlar UzScholar platformasidagi shaxsiy sahifangizda barcha uchun ochiq ko'rinadi.
+            </p>
           </div>
         </div>
 
-        {/* Basic Info */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Asosiy ma&apos;lumotlar</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Ism"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-            />
-            <Input
-              label="Lavozim"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            />
-            <Input
-              label="Muassasa"
-              value={formData.affiliation}
-              onChange={(e) => setFormData({ ...formData, affiliation: e.target.value })}
-            />
-            <Input
-              label="Email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Biografiya</label>
-            <textarea
-              value={formData.bio}
-              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              rows={4}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 outline-none"
-            />
-          </div>
-        </div>
+        {/* Right Column: Detailed Forms */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Basic Section */}
+          <section className="bg-white rounded-3xl border border-slate-200/60 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <h2 className="text-xl font-bold text-slate-900 mb-8 border-l-4 border-primary pl-4">Asosiy ma'lumotlar</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Input
+                label="To'liq ism-sharif *"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                className="h-12 rounded-xl"
+              />
+              <Input
+                label="Ilmiy daraja / Lavozim"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="h-12 rounded-xl"
+              />
+              <Input
+                label="Ish joyi (Affiliation)"
+                value={formData.affiliation}
+                onChange={(e) => setFormData({ ...formData, affiliation: e.target.value })}
+                className="h-12 rounded-xl"
+              />
+              <Input
+                label="Email manzili"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="h-12 rounded-xl"
+              />
+            </div>
+            <div className="mt-6">
+              <label className="block text-sm font-bold text-slate-700 mb-2">Qisqacha biografiya</label>
+              <textarea
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                rows={4}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all font-medium text-slate-600"
+                placeholder="O'zingiz haqingizda qisqacha ma'lumot..."
+              />
+            </div>
+          </section>
 
-        {/* Research Interests */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tadqiqot sohalari</h2>
-          <div className="flex gap-2 mb-4">
-            <input
-              type="text"
-              value={interestInput}
-              onChange={(e) => setInterestInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
-              placeholder="Tadqiqot sohasini kiriting"
-              className="flex-1 px-4 py-2.5 rounded-xl border border-gray-300 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 outline-none"
-            />
-            <Button type="button" onClick={addInterest}>Qo&apos;shish</Button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {formData.researchInterests?.map((interest, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] px-3 py-1 rounded-full text-sm"
-              >
-                {interest}
-                <button
-                  type="button"
-                  onClick={() => removeInterest(index)}
-                  className="hover:text-blue-900"
+          {/* Research Interests */}
+          <section className="bg-white rounded-3xl border border-slate-200/60 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <h2 className="text-xl font-bold text-slate-900 mb-8 border-l-4 border-primary pl-4">Tadqiqot sohalari</h2>
+            <div className="flex gap-2 mb-6">
+              <input
+                type="text"
+                value={interestInput}
+                onChange={(e) => setInterestInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
+                placeholder="Masalan: Mashinali o'qitish..."
+                className="flex-1 h-12 px-4 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all font-medium"
+              />
+              <Button type="button" onClick={addInterest} className="h-12 px-6 rounded-xl font-bold bg-primary">Qo'shish</Button>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {formData.researchInterests?.map((interest, index) => (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  key={index}
+                  className="inline-flex items-center gap-2 bg-slate-50 text-slate-600 px-4 py-2 rounded-xl text-sm font-bold border border-slate-100"
                 >
-                  <X className="h-4 w-4" />
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+                  {interest}
+                  <button
+                    type="button"
+                    onClick={() => removeInterest(index)}
+                    className="text-slate-400 hover:text-rose-500 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </motion.span>
+              ))}
+            </div>
+          </section>
 
-        {/* Education */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Ta&apos;lim</h2>
-            <Button type="button" variant="outline" onClick={addEducation}>
-              Qo&apos;shish
-            </Button>
-          </div>
-          <div className="space-y-4">
-            {formData.education?.map((edu, index) => (
-              <div key={index} className="border border-gray-200 rounded-xl p-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Input
-                    value={edu.degree}
-                    onChange={(e) => updateEducation(index, 'degree', e.target.value)}
-                    placeholder="Daraja"
-                  />
-                  <Input
-                    value={edu.institution}
-                    onChange={(e) => updateEducation(index, 'institution', e.target.value)}
-                    placeholder="Muassasa"
-                  />
-                  <div className="flex gap-2">
+          {/* Education */}
+          <section className="bg-white rounded-3xl border border-slate-200/60 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="flex items-center justify-between mb-8 border-l-4 border-primary pl-4">
+              <h2 className="text-xl font-bold text-slate-900">Ta'lim tarixi</h2>
+              <Button type="button" variant="outline" onClick={addEducation} className="rounded-xl font-bold border-slate-200 hover:bg-slate-50 px-4">
+                <Plus className="h-4 w-4 mr-2" /> Qo'shish
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {formData.education?.map((edu, index) => (
+                <div key={index} className="group relative border border-slate-100 bg-slate-50/30 rounded-2xl p-6 hover:border-primary/20 hover:bg-white transition-all">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Input
+                      value={edu.degree}
+                      onChange={(e) => updateEducation(index, 'degree', e.target.value)}
+                      placeholder="Daraja (masalan: Bakalavr)"
+                      className="h-11 rounded-lg"
+                    />
+                    <Input
+                      value={edu.institution}
+                      onChange={(e) => updateEducation(index, 'institution', e.target.value)}
+                      placeholder="Muassasa nomi"
+                      className="h-11 rounded-lg"
+                    />
                     <Input
                       value={edu.year}
                       onChange={(e) => updateEducation(index, 'year', e.target.value)}
                       placeholder="Yil"
-                      className="flex-1"
+                      className="h-11 rounded-lg"
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => removeEducation(index)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center justify-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => removeEducation(index)}
+                        className="text-rose-500 hover:bg-rose-50 rounded-lg p-2"
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              ))}
+            </div>
+          </section>
 
-        {/* Contact */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Aloqa ma&apos;lumotlari</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Website"
-              type="url"
-              value={formData.contact?.website || ''}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  contact: { ...formData.contact, website: e.target.value },
-                })
-              }
-            />
-            <Input
-              label="Google Scholar"
-              type="url"
-              value={formData.contact?.googleScholar || ''}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  contact: { ...formData.contact, googleScholar: e.target.value },
-                })
-              }
-            />
-          </div>
+          {/* Contact */}
+          <section className="bg-white rounded-3xl border border-slate-200/60 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] pb-12">
+            <h2 className="text-xl font-bold text-slate-900 mb-8 border-l-4 border-primary pl-4">Ijtimoiy tarmoqlar</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Input
+                label="Shaxsiy veb-sayt"
+                type="url"
+                value={formData.contact?.website || ''}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    contact: { ...formData.contact, website: e.target.value },
+                  })
+                }
+                className="h-12 rounded-xl"
+              />
+              <Input
+                label="Google Scholar havola"
+                type="url"
+                value={formData.contact?.googleScholar || ''}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    contact: { ...formData.contact, googleScholar: e.target.value },
+                  })
+                }
+                className="h-12 rounded-xl"
+              />
+            </div>
+          </section>
         </div>
-
-        <Button 
-          type="submit" 
-          variant="primary" 
-          size="lg" 
-          disabled={loading} 
-          className="w-full sm:w-auto flex items-center justify-center bg-[#2563EB] hover:bg-[#1d4ed8]"
-        >
-          <Save className="h-5 w-5 mr-2" />
-          {loading ? 'Saqlanmoqda...' : 'Saqlash va ko\'rinish'}
-        </Button>
-      </form>
+      </div>
     </div>
   );
 }

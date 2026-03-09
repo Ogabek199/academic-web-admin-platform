@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   GraduationCap,
   User,
@@ -16,6 +17,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface UserType {
   id: string;
@@ -108,23 +110,29 @@ export default function AdminLayout({
 
   const SidebarContent = () => (
     <>
-      <div className="flex items-center justify-between p-4 lg:justify-center border-b border-gray-200/60">
+      <div className="flex items-center justify-between p-6 lg:justify-start border-b border-slate-200/50">
         <Link
           href="/admin"
-          className="flex items-center gap-2"
+          className="flex items-center gap-3 group"
           onClick={() => setSidebarOpen(false)}
         >
-          <div className="w-10 h-10 bg-[#2563EB] rounded-xl flex items-center justify-center shrink-0">
-            <GraduationCap className="h-6 w-6 text-white" />
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <Image
+              src="/logo.svg"
+              alt="UzScholar logotipi"
+              width={40}
+              height={40}
+              className="h-full w-full object-cover"
+            />
           </div>
-          <span className="text-lg font-bold text-gray-900 lg:block hidden">
-            Admin Panel
+          <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-primary transition-colors lg:block hidden">
+            UzScholar
           </span>
         </Link>
         <button
           type="button"
           onClick={() => setSidebarOpen(false)}
-          className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+          className="lg:hidden p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors"
           aria-label="Menuni yopish"
         >
           <X className="h-5 w-5" />
@@ -142,61 +150,67 @@ export default function AdminLayout({
               key={item.href}
               href={item.href}
               onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive
-                ? 'bg-[#2563EB] text-white shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 relative group ${isActive
+                ? 'text-white shadow-lg shadow-primary/20 bg-primary'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-primary'
                 }`}
             >
-              <Icon className="h-5 w-5 shrink-0" />
+              <Icon className={`h-5 w-5 shrink-0 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
               {item.label}
+              {isActive && (
+                <motion.div
+                  layoutId="admin-nav-pill"
+                  className="absolute inset-0 bg-primary rounded-xl -z-10"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-200/60 space-y-3">
+      <div className="p-4 border-t border-slate-200/50 space-y-2">
         <Link
-          href="/"
+          href="/website"
           onClick={() => setSidebarOpen(false)}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-primary transition-all group"
         >
-          <ArrowLeft className="h-5 w-5 shrink-0 text-[#2563EB]" />
-          <span>Vebsaytga qaytish</span>
+          <ArrowLeft className="h-5 w-5 shrink-0 text-primary transition-transform group-hover:-translate-x-1" />
+          <span>Saytga qaytish</span>
         </Link>
-        <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-xl">
-          <div className="w-2 h-2 bg-[#10b981] rounded-full"></div>
-          <span className="text-sm font-medium text-gray-700 truncate">
-            {user.username}
-          </span>
+        
+        <div className="flex items-center gap-3 px-4 py-3 bg-slate-50/50 rounded-xl border border-slate-200/50">
+          <div className="relative">
+            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-bold text-xs">
+              {user.username.charAt(0).toUpperCase()}
+            </div>
+            <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-slate-900 truncate">{user.username}</p>
+            <p className="text-[10px] text-slate-500 truncate lowercase">{user.email}</p>
+          </div>
         </div>
-        <a
-          href="https://t.me/otaxonov_o17"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-        >
-          <MessageCircle className="h-5 w-5 shrink-0 text-[#2563EB]" />
-          <span>Qo&apos;llab-quvvatlash: @otaxonov_o17</span>
-        </a>
-        <Button
-          variant="ghost"
-          size="sm"
+
+        <button
           onClick={handleLogout}
-          className="w-full justify-start flex items-center gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-all border border-transparent hover:border-rose-100"
         >
           <LogOut className="h-5 w-5" />
           Chiqish
-        </Button>
+        </button>
       </div>
     </>
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 shadow-sm z-30">
-        <SidebarContent />
-      </aside>
+    <div className="min-h-screen bg-slate-50 flex">
+      <AnimatePresence mode="wait">
+        {/* Desktop Sidebar */}
+        <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white/80 backdrop-blur-xl border-r border-slate-200/60 z-30">
+          <SidebarContent />
+        </aside>
+      </AnimatePresence>
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -218,24 +232,30 @@ export default function AdminLayout({
       {/* Main content */}
       <div className="flex-1 lg:pl-64 min-h-screen flex flex-col">
         {/* Top bar - mobile */}
-        <header className="lg:hidden sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <header className="lg:hidden sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 px-4 py-3 flex items-center justify-between">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors"
             aria-label="Menuni ochish"
           >
             <Menu className="h-6 w-6" />
           </button>
-          <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center">
-              <GraduationCap className="h-5 w-5 text-white" />
+          <Link href="/admin" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <Image
+                src="/logo.svg"
+                alt="Logo"
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
+              />
             </div>
-            <span className="font-semibold text-gray-900">Admin</span>
+            <span className="font-bold text-slate-900 group-hover:text-primary transition-colors">Admin</span>
           </Link>
           <Link
-            href="/"
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+            href="/website"
+            className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors"
             aria-label="Vebsaytga qaytish"
           >
             <ArrowLeft className="h-6 w-6" />
@@ -243,7 +263,13 @@ export default function AdminLayout({
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          {children}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {children}
+          </motion.div>
         </main>
       </div>
     </div>

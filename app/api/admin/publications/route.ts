@@ -58,20 +58,38 @@ export async function DELETE(request: NextRequest) {
   try {
     const token = request.cookies.get('auth-token')?.value;
     if (!token) {
+      console.error('[DELETE Publication] Unauthorized: No token');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const decoded = verifyToken(token);
     if (!decoded) {
+      console.error('[DELETE Publication] Unauthorized: Invalid token');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      console.error('[DELETE Publication] Error parsing JSON:', e);
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+
+    const { id } = body;
+    if (!id) {
+      console.error('[DELETE Publication] Error: No ID provided in request body');
+      return NextResponse.json({ error: 'ID tanlanmagan' }, { status: 400 });
+    }
+
+    console.log(`[DELETE Publication] Deleting publication ${id} for user ${decoded.userId}`);
     deletePublication(id, decoded.userId);
+    
     return NextResponse.json({ success: true });
   } catch (error: any) {
+    console.error('[DELETE Publication] Internal Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Xatolik' },
+      { error: error.message || 'Xatolik yuz berdi' },
       { status: 500 }
     );
   }
