@@ -11,7 +11,7 @@ export default function WebsiteLayout({
   return (
     <div className="min-h-screen flex flex-col bg-transparent">
       <PublicNavigation />
-      <main id="main-content" className="flex-1" role="main" tabIndex={-1}>
+      <main id="main-content" className="flex-1 pt-28" role="main" tabIndex={-1}>
         <AnimateLayout>
           {children}
         </AnimateLayout>
