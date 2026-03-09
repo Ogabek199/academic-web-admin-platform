@@ -243,7 +243,7 @@ export default function HomePage() {
                         if (searchQuery.trim().length > 0) setShowSuggestions(true);
                       }}
                       placeholder="Muallif ismi, maqola sarlavhasi yoki kalit so'z..."
-                      className="w-full px-4 py-3 bg-transparent border-none focus:ring-0 text-slate-900 placeholder-slate-400 text-lg"
+                      className="w-full px-4 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-slate-900 placeholder-slate-400 text-lg"
                       autoComplete="off"
                     />
                   </div>
@@ -373,7 +373,7 @@ export default function HomePage() {
                 <motion.div key={profile.id} variants={fadeInUp}>
                   <Link
                     href={`/website/profile/${profile.userId || profile.id}`}
-                    className="group relative block h-full p-6 rounded-[2.5rem] bg-white/80 backdrop-blur-xl border border-slate-200 hover:border-primary/30 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
+                    className="group relative block h-full p-6 rounded-[2.5rem] bg-white/40 backdrop-blur-md border border-white/50 hover:border-primary/30 transition-all shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 p-6">
                        <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 group-hover:bg-primary/10 text-slate-300 group-hover:text-primary transition-colors">
@@ -518,7 +518,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-wrap justify-center gap-6">
                 <Link href="/admin/login">
-                  <Button className="bg-white text-primary hover:bg-white/90 scale-110 px-10 py-6 rounded-2xl text-lg font-bold">
+                  <Button className="!bg-white !text-blue-600 hover:!bg-white/90 scale-110 px-10 py-6 rounded-2xl text-lg font-bold shadow-xl">
                     Ishni boshlash
                   </Button>
                 </Link>
