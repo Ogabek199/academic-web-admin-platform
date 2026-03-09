@@ -22,9 +22,9 @@ export default function PublicNavigation() {
   ];
 
   return (
-    <header className="fixed top-0 inset-x-0 z-[60] px-4 py-4 pointer-events-none" role="banner">
+    <header className="fixed top-0 inset-x-0 z-[60] px-4 py-4 mb-6 pointer-events-none" role="banner">
       <div className="max-w-7xl mx-auto pointer-events-auto">
-        <motion.div 
+        <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="relative rounded-2xl bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] overflow-hidden transition-all duration-300"
@@ -68,7 +68,7 @@ export default function PublicNavigation() {
                         {link.label}
                       </span>
                       {isActive && (
-                        <motion.div 
+                        <motion.div
                           layoutId="nav-pill"
                           className="absolute inset-0 bg-primary/10 rounded-lg -z-0"
                           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
@@ -115,7 +115,7 @@ export default function PublicNavigation() {
           {/* Mobile menu */}
           <AnimatePresence>
             {mobileMenuOpen && (
-              <motion.div 
+              <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
@@ -131,11 +131,10 @@ export default function PublicNavigation() {
                         key={link.href}
                         href={link.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center justify-between px-5 py-4 rounded-xl text-base font-bold transition-all ${
-                          isActive
-                            ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                            : 'text-slate-700 hover:bg-slate-100 hover:text-primary'
-                        }`}
+                        className={`flex items-center justify-between px-5 py-4 rounded-xl text-base font-bold transition-all ${isActive
+                          ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                          : 'text-slate-700 hover:bg-slate-100 hover:text-primary'
+                          }`}
                       >
                         {link.label}
                         <ArrowRight className={`h-4 w-4 transition-transform ${isActive ? 'translate-x-0' : '-translate-x-2 opacity-0'}`} />
@@ -152,8 +151,8 @@ export default function PublicNavigation() {
                     Telegram: @{TELEGRAM_USERNAME}
                     <ArrowRight className="h-4 w-4 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100" />
                   </a>
-                  <Link 
-                    href="/admin/login" 
+                  <Link
+                    href="/admin/login"
                     onClick={() => setMobileMenuOpen(false)}
                     className="mt-2 flex items-center justify-center gap-3 px-5 py-5 rounded-2xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all"
                   >
