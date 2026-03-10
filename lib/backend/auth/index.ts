@@ -26,18 +26,18 @@ export function verifyToken(token: string): { userId: string; username: string }
 }
 
 export async function registerUser(username: string, password: string, email: string) {
-  const existingUser = getUserByUsername(username);
+  const existingUser = await getUserByUsername(username);
   if (existingUser) {
     throw new Error('Username already exists');
   }
 
   const hashedPassword = await hashPassword(password);
-  const user = createUser(username, hashedPassword, email);
+  const user = await createUser(username, hashedPassword, email);
   return user;
 }
 
 export async function loginUser(username: string, password: string) {
-  const user = getUserByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) {
     throw new Error('Invalid credentials');
   }
@@ -47,14 +47,14 @@ export async function loginUser(username: string, password: string) {
     throw new Error('Invalid credentials');
   }
 
-  const token = generateToken(user.id, user.username);
-  return { user: { id: user.id, username: user.username, email: user.email }, token };
+  const token = generateToken(user._id.toString(), user.username);
+  return { user: { id: user._id.toString(), username: user.username, email: user.email }, token };
 }
 
 // Initialize users file if doesn't exist (no default admin)
 export async function initAdmin() {
   // Just ensure users file exists, don't create default admin
   // Each user should get their own login/password from admin
-  getUsers(); // This will create the file if it doesn't exist
+  await getUsers(); // This will create the file if it doesn't exist
 }
 

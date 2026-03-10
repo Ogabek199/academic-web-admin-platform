@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const sort = searchParams.get('sort') || 'recent'; // recent, citations
 
-    let publications = getPublications();
+    let publications = await getPublications();
 
     // Sort publications
     if (sort === 'citations') {

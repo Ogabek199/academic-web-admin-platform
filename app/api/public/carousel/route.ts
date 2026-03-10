@@ -107,8 +107,8 @@ const examplePublications = [
 
 export async function GET() {
   try {
-    const profiles = getAllPublicProfiles();
-    const publications = getPublications();
+    const profiles = await getAllPublicProfiles();
+    const publications = await getPublications();
 
     // Haqiqiy profillar (masalan Abubakir) + 2 ta o'zbek tadqiqotchisi
     const realFeatured = profiles.filter(p => p.photo).slice(0, 5);

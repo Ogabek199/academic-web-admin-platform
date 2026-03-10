@@ -8,15 +8,15 @@ export async function GET(request: NextRequest) {
 
     let profiles;
     if (query) {
-      profiles = searchProfiles(query);
+      profiles = await searchProfiles(query);
     } else {
-      profiles = getAllPublicProfiles();
+      profiles = await getAllPublicProfiles();
     }
 
     return NextResponse.json({ profiles });
   } catch (error: unknown) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Xatolik' },
+      { error: error instanceof Error ? error.message : 'Ma\'lumotlarni yuklashda xatolik yuz berdi' },
       { status: 500 }
     );
   }

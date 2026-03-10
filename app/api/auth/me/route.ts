@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ user: null }, { status: 200 });
     }
 
-    const users = getUsers();
+    const users = await getUsers();
     const user = users.find(u => u.id === decoded.userId);
 
     if (!user) {

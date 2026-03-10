@@ -39,13 +39,9 @@ export default function PublicFooter() {
               Tadqiqotchilar, olimlar va talabalar uchun O'zbekistondagi eng yirik va zamonaviy ilmiy ekotizim.
             </p>
             <div className="flex items-center gap-4">
-               <a href="#" className="p-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-primary transition-all">
-                  <span className="sr-only">Facebook</span>
-                  <div className="h-5 w-5">f</div>
-               </a>
-               <a href={`https://t.me/${TELEGRAM_USERNAME}`} target="_blank" className="p-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-primary transition-all">
-                  <Send className="h-5 w-5" />
-               </a>
+              <a href={`https://t.me/${TELEGRAM_USERNAME}`} target="_blank" className="p-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-primary transition-all">
+                <Send className="h-5 w-5" />
+              </a>
             </div>
           </div>
 
@@ -58,8 +54,8 @@ export default function PublicFooter() {
               <ul className="space-y-4">
                 {['Asosiy', 'Tadqiqotchilar', 'Nashrlar', 'Haqida'].map((label, i) => (
                   <li key={i}>
-                    <Link 
-                      href={['/website', '/website/researchers', '/website/publications', '/about'][i]} 
+                    <Link
+                      href={['/website', '/website/researchers', '/website/publications', '/about'][i]}
                       className="text-slate-400 hover:text-white transition-colors flex items-center group"
                     >
                       <span className="h-1.5 w-0 bg-primary rounded-full mr-0 group-hover:w-1.5 group-hover:mr-2 transition-all" />
@@ -99,7 +95,7 @@ export default function PublicFooter() {
                 <span className="text-slate-500 text-xs font-bold mb-1 group-hover:text-primary transition-colors">Yordam boti</span>
                 <span className="text-white font-semibold flex items-center gap-2">
                   <Send className="h-4 w-4" />
-                   @{TELEGRAM_USERNAME}
+                  @{TELEGRAM_USERNAME}
                 </span>
               </a>
               <a
@@ -109,7 +105,7 @@ export default function PublicFooter() {
                 <span className="text-slate-500 text-xs font-bold mb-1 group-hover:text-primary transition-colors">Ishonch telefoni</span>
                 <span className="text-white font-semibold flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                   +998 90 150 26 57
+                  +998 90 150 26 57
                 </span>
               </a>
             </div>
@@ -119,16 +115,16 @@ export default function PublicFooter() {
         {/* Bottom bar */}
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-4 text-sm text-slate-500">
-             <span>Ma'lumotlar xavfsizligi ta'minlangan</span>
-             <div className="h-1 w-1 rounded-full bg-slate-700" />
-             <span>{currentYear} UzScholar Project</span>
+            <span>Ma'lumotlar xavfsizligi ta'minlangan</span>
+            <div className="h-1 w-1 rounded-full bg-slate-700" />
+            <span>{currentYear} UzScholar Project</span>
           </div>
           <p className="text-sm text-slate-500 order-last md:order-none">
             © Barcha huquqlar himoyalangan.
           </p>
           <div className="flex items-center gap-8">
-             <Link href="/about" className="text-sm text-slate-500 hover:text-white transition-colors">Siyosatimiz</Link>
-             <Link href="/about#faq" className="text-sm text-slate-500 hover:text-white transition-colors">FAQ</Link>
+            <Link href="/about" className="text-sm text-slate-500 hover:text-white transition-colors">Siyosatimiz</Link>
+            <Link href="/about#faq" className="text-sm text-slate-500 hover:text-white transition-colors">FAQ</Link>
           </div>
         </div>
       </div>

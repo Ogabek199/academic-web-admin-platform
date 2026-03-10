@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { motion } from 'framer-motion';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState<any>(null);
@@ -241,28 +242,57 @@ export default function AdminDashboard() {
         </div>
 
         <div className="lg:col-span-3 space-y-6">
-          <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/20">
+          <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/20 border border-slate-800 backdrop-blur-xl">
             <div className="absolute top-0 right-0 p-8 opacity-10">
               <FileText className="h-32 w-32 rotate-12" />
             </div>
-            <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-4">Profil holati</h3>
-              <div className="w-full bg-white/10 rounded-full h-3 mb-6 overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: stats.profile ? '100%' : '40%' }}
-                  className="bg-primary h-full rounded-full"
-                />
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <h3 className="text-xl font-bold mb-6 self-start">Profil holati</h3>
+              
+              <div className="relative w-48 h-48 mb-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Completed', value: stats.profile ? 100 : 40 },
+                        { name: 'Remaining', value: stats.profile ? 0 : 60 },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={0}
+                      dataKey="value"
+                      stroke="none"
+                      startAngle={225}
+                      endAngle={-45}
+                    >
+                      <Cell fill="#3b82f6" />
+                      <Cell fill="rgba(255, 255, 255, 0.05)" />
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-4xl font-black text-white">{stats.profile ? '100' : '40'}%</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tugallangan</span>
+                </div>
               </div>
-              <p className="text-sm text-slate-300 mb-6 font-medium leading-relaxed">
+
+              <p className="text-sm text-slate-400 mb-8 font-medium leading-relaxed max-w-[240px]">
                 Profilingizni to'liq to'ldirish foydalanuvchilarning sizga nisbatan ishonchini oshiradi.
               </p>
-              {!stats.profile && (
-                <Link href="/admin/profile">
-                  <Button className="w-full rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-bold border-0 h-14">
+              
+              {!stats.profile ? (
+                <Link href="/admin/profile" className="w-full">
+                  <Button className="w-full rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-bold border-0 h-14 shadow-lg shadow-white/5">
                     Tugatish
                   </Button>
                 </Link>
+              ) : (
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Profil tayyor
+                </div>
               )}
             </div>
           </div>

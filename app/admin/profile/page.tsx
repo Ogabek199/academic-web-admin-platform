@@ -7,6 +7,7 @@ import { Button } from '@/shared/ui/Button';
 import { Save, Upload, X, User, Plus, Trash2 } from 'lucide-react';
 import { Profile } from '@/types';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 export default function AdminProfilePage() {
   const router = useRouter();
@@ -45,12 +46,12 @@ export default function AdminProfilePage() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Faqat rasm fayllari yuklash mumkin');
+      toast.error('Faqat rasm fayllari yuklash mumkin');
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Rasm hajmi 5MB dan katta bo\'lmasligi kerak');
+      toast.error('Rasm hajmi 5MB dan katta bo\'lmasligi kerak');
       return;
     }
 
@@ -72,13 +73,13 @@ export default function AdminProfilePage() {
 
       if (data.success && data.url) {
         setFormData(prev => ({ ...prev, photo: data.url }));
-        alert('Rasm muvaffaqiyatli yuklandi!');
+        toast.success('Rasm muvaffaqiyatli yuklandi!');
       } else {
-        throw new Error('Yuklash xatolik');
+        throw new Error('Yuklashda xatolik yuz berdi');
       }
     } catch (error: any) {
       console.error('Upload error:', error);
-      alert(error.message || 'Rasm yuklashda xatolik yuz berdi');
+      toast.error(error.message || 'Rasm yuklashda xatolik yuz berdi');
     } finally {
       setUploading(false);
       const input = document.getElementById('photo-upload-input') as HTMLInputElement;
@@ -112,10 +113,10 @@ export default function AdminProfilePage() {
 
       if (!response.ok) throw new Error('Saqlashda xatolik yuz berdi');
 
-      alert('Profil muvaffaqiyatli saqlandi!');
+      toast.success('Profil muvaffaqiyatli saqlandi!');
       router.refresh();
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message || 'Xatolik yuz berdi');
     } finally {
       setLoading(false);
     }

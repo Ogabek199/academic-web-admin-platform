@@ -1,154 +1,83 @@
-import fs from 'fs';
-import path from 'path';
+import dbConnect from './config';
+import { UserModel, ProfileModel, PublicationModel } from './models';
 import { Profile, Publication } from '@/types';
 
-const DATA_DIR = path.resolve(process.cwd(), 'data');
-const USERS_FILE = path.resolve(DATA_DIR, 'users.json');
-const PROFILES_FILE = path.resolve(DATA_DIR, 'profiles.json');
-const PUBLICATIONS_FILE = path.resolve(DATA_DIR, 'publications.json');
-
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+export async function getUsers() {
+  await dbConnect();
+  return await UserModel.find({});
 }
 
-interface User {
-  id: string;
-  username: string;
-  password: string; // hashed
-  email: string;
-  createdAt: string;
+export async function getUserByUsername(username: string) {
+  await dbConnect();
+  return await UserModel.findOne({ username });
 }
 
-interface UserProfile extends Profile {
-  userId: string;
-}
-
-interface UserPublication extends Publication {
-  userId: string;
-}
-
-// Initialize files if they don't exist
-function initFile(filePath: string, defaultValue: any) {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2));
-  }
-}
-
-initFile(USERS_FILE, []);
-initFile(PROFILES_FILE, []);
-initFile(PUBLICATIONS_FILE, []);
-
-export function getUsers(): User[] {
-  try {
-    const data = fs.readFileSync(USERS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-export function saveUsers(users: User[]): void {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-}
-
-export function getUserByUsername(username: string): User | null {
-  const users = getUsers();
-  return users.find(u => u.username === username) || null;
-}
-
-export function createUser(username: string, password: string, email: string): User {
-  const users = getUsers();
-  const user: User = {
-    id: Date.now().toString(),
+export async function createUser(username: string, password: string, email: string) {
+  await dbConnect();
+  const user = new UserModel({
     username,
-    password, // Should be hashed before calling
+    password,
     email,
-    createdAt: new Date().toISOString(),
-  };
-  users.push(user);
-  saveUsers(users);
-  return user;
+  });
+  return await user.save();
 }
 
-export function getProfiles(): UserProfile[] {
-  try {
-    const data = fs.readFileSync(PROFILES_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+export async function getProfileByUserId(userId: string) {
+  await dbConnect();
+  return await ProfileModel.findOne({ userId });
 }
 
-export function saveProfiles(profiles: UserProfile[]): void {
-  fs.writeFileSync(PROFILES_FILE, JSON.stringify(profiles, null, 2));
-}
-
-export function getProfileByUserId(userId: string): UserProfile | null {
-  const profiles = getProfiles();
-  return profiles.find(p => p.userId === userId) || null;
-}
-
-export function saveProfile(profile: UserProfile): void {
-  const profiles = getProfiles();
-  const index = profiles.findIndex(p => p.userId === profile.userId);
-  if (index >= 0) {
-    profiles[index] = profile;
-  } else {
-    profiles.push(profile);
-  }
-  saveProfiles(profiles);
-}
-
-export function getPublications(): UserPublication[] {
-  try {
-    const data = fs.readFileSync(PUBLICATIONS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-export function savePublications(publications: UserPublication[]): void {
-  fs.writeFileSync(PUBLICATIONS_FILE, JSON.stringify(publications, null, 2));
-}
-
-export function getPublicationsByUserId(userId: string): UserPublication[] {
-  const publications = getPublications();
-  return publications.filter(p => p.userId === userId);
-}
-
-export function addPublication(publication: UserPublication): void {
-  const publications = getPublications();
-  publications.push(publication);
-  savePublications(publications);
-}
-
-export function deletePublication(id: string, userId: string): void {
-  const publications = getPublications();
-  const filtered = publications.filter(p => p.id !== id || p.userId !== userId);
-  savePublications(filtered);
-}
-
-export function getAllPublicProfiles(): UserProfile[] {
-  return getProfiles();
-}
-
-export function searchProfiles(query: string): UserProfile[] {
-  const profiles = getProfiles();
-  const lowerQuery = query.toLowerCase();
-  return profiles.filter(profile => 
-    profile.name.toLowerCase().includes(lowerQuery) ||
-    profile.title.toLowerCase().includes(lowerQuery) ||
-    profile.affiliation.toLowerCase().includes(lowerQuery) ||
-    profile.researchInterests.some(interest => 
-      interest.toLowerCase().includes(lowerQuery)
-    )
+export async function saveProfile(profile: any) {
+  await dbConnect();
+  return await ProfileModel.findOneAndUpdate(
+    { userId: profile.userId },
+    profile,
+    { upsert: true, new: true }
   );
 }
 
-export function getStatistics(): any {
-  const publications = getPublications();
+export async function getPublications() {
+  await dbConnect();
+  return await PublicationModel.find({}).sort({ year: -1 });
+}
+
+export async function getPublicationsByUserId(userId: string) {
+  await dbConnect();
+  return await PublicationModel.find({ userId }).sort({ year: -1 });
+}
+
+export async function addPublication(publication: any) {
+  await dbConnect();
+  const pub = new PublicationModel(publication);
+  return await pub.save();
+}
+
+export async function deletePublication(id: string, userId: string) {
+  await dbConnect();
+  return await PublicationModel.findOneAndDelete({ _id: id, userId });
+}
+
+export async function getAllPublicProfiles() {
+  await dbConnect();
+  return await ProfileModel.find({});
+}
+
+export async function searchProfiles(query: string) {
+  await dbConnect();
+  const lowerQuery = query.toLowerCase();
+  return await ProfileModel.find({
+    $or: [
+      { name: { $regex: lowerQuery, $options: 'i' } },
+      { title: { $regex: lowerQuery, $options: 'i' } },
+      { affiliation: { $regex: lowerQuery, $options: 'i' } },
+      { researchInterests: { $regex: lowerQuery, $options: 'i' } },
+    ]
+  });
+}
+
+export async function getStatistics() {
+  await dbConnect();
+  const publications = await PublicationModel.find({});
   
   const totalPublications = publications.length;
   const totalCitations = publications.reduce((sum, p) => sum + (p.citations || 0), 0);

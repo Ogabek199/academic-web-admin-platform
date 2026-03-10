@@ -63,8 +63,9 @@ export const metadata: Metadata = {
   alternates: { canonical: baseUrl },
   category: "Science & Education",
   icons: {
-    icon: [{ url: "/favicon.ico" }, { url: "/logo.svg", type: "image/svg+xml" }],
+    icon: "/logo.svg",
     apple: "/logo.svg",
+    shortcut: "/logo.svg",
   },
 };
 
@@ -101,6 +102,8 @@ const jsonLd = {
   }
 };
 
+import ToastProvider from "@/shared/components/ToastProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -115,6 +118,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white text-slate-900 antialiased font-sans selection:bg-blue-100 selection:text-blue-900" suppressHydrationWarning>
+        <ToastProvider />
         <div className="bg-mesh min-h-screen">
           {children}
         </div>

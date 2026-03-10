@@ -6,6 +6,7 @@ import { Input } from '@/shared/ui/Input';
 import { Plus, Trash2, ExternalLink, Search, Upload, FileText, X } from 'lucide-react';
 import { Publication } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 export default function AdminPublicationsPage() {
   const [publications, setPublications] = useState<Publication[]>([]);
@@ -106,9 +107,10 @@ export default function AdminPublicationsPage() {
         fileUrl: '',
       });
       loadPublications();
+      toast.success('Nashr muvaffaqiyatli saqlandi!');
     } catch (error: any) {
       setUploadError(error.message);
-      alert(error.message);
+      toast.error(error.message || 'Xatolik yuz berdi');
     } finally {
       setLoading(false);
     }
@@ -128,9 +130,10 @@ export default function AdminPublicationsPage() {
         const err = await response.json();
         throw new Error(err.error || 'O\'chirishda xatolik yuz berdi');
       }
+      toast.success('Nashr o\'chirildi');
       loadPublications();
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message || 'O\'chirishda xatolik yuz berdi');
     }
   };
 
@@ -187,6 +190,7 @@ export default function AdminPublicationsPage() {
             setShowForm(!showForm);
             if (showForm) setFile(null);
           }}
+          variant={showForm ? "ghost" : "primary"}
           className={`h-12 px-6 rounded-2xl font-bold transition-all duration-300 shadow-lg ${
             showForm 
             ? 'bg-rose-50 text-rose-600 hover:bg-rose-100 shadow-rose-100 border border-rose-200' 

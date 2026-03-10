@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const publications = getPublicationsByUserId(decoded.userId);
+    const publications = await getPublicationsByUserId(decoded.userId);
     return NextResponse.json({ publications });
   } catch (error: any) {
     return NextResponse.json(
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       userId: decoded.userId,
     };
 
-    addPublication(publication);
+    await addPublication(publication);
     return NextResponse.json({ success: true, publication });
   } catch (error: any) {
     return NextResponse.json(
@@ -83,7 +83,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     console.log(`[DELETE Publication] Deleting publication ${id} for user ${decoded.userId}`);
-    deletePublication(id, decoded.userId);
+    await deletePublication(id, decoded.userId);
     
     return NextResponse.json({ success: true });
   } catch (error: any) {

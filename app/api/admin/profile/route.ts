@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const profile = getProfileByUserId(decoded.userId);
+    const profile = await getProfileByUserId(decoded.userId);
     return NextResponse.json({ profile });
   } catch (error: any) {
     return NextResponse.json(
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       userId: decoded.userId,
     };
 
-    saveProfile(profile);
+    await saveProfile(profile);
     return NextResponse.json({ success: true, profile });
   } catch (error: any) {
     return NextResponse.json(
