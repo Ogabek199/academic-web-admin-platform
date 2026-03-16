@@ -39,3 +39,15 @@ export async function POST(request: NextRequest) {
   }
 }
 
+
+// supabase ga register qilish
+// export async function POST(request: NextRequest) {
+//   try {
+//     const { username, password, email } = await request.json();
+//   } catch (error) {
+//     return NextResponse.json(
+//       { error: error instanceof Error ? error.message : 'Registration xatolik' },
+//       { status: 400 }
+//     );
+//   }
+// }
