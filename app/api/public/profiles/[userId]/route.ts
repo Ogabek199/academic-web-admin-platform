@@ -3,12 +3,12 @@ import { getProfileByUserId, getPublicationsByUserId } from "@/lib/backend/db";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: { userId: string } }
 ) {
   try {
-    const { userId } = await params;
-    const profile = getProfileByUserId(userId);
-    const publications = getPublicationsByUserId(userId);
+    const { userId } = params;
+    const profile = await getProfileByUserId(userId);
+    const publications = await getPublicationsByUserId(userId);
 
     if (!profile) {
       return NextResponse.json({ error: "Profil topilmadi" }, { status: 404 });

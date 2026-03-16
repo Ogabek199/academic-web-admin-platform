@@ -1,90 +1,188 @@
-import dbConnect from './config';
-import { UserModel, ProfileModel, PublicationModel } from './models';
-import { Profile, Publication } from '@/types';
+import { supabaseAdmin } from '../supabase';
+import { Publication } from '@/types';
 
 export async function getUsers() {
-  await dbConnect();
-  return await UserModel.find({});
+  const { data, error } = await supabaseAdmin.from('users').select('*');
+  if (error) throw error;
+  return data || [];
 }
 
 export async function getUserByUsername(username: string) {
-  await dbConnect();
-  return await UserModel.findOne({ username });
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('*')
+    .eq('username', username)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    // PGRST116 = Row not found
+    throw error;
+  }
+
+  return data || null;
 }
 
 export async function createUser(username: string, password: string, email: string) {
-  await dbConnect();
-  const user = new UserModel({
-    username,
-    password,
-    email,
-  });
-  return await user.save();
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .insert({ username, password, email })
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
 export async function getProfileByUserId(userId: string) {
-  await dbConnect();
-  return await ProfileModel.findOne({ userId });
+  const { data, error } = await supabaseAdmin
+    .from('profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    throw error;
+  }
+
+  return data || null;
 }
 
-export async function saveProfile(profile: any) {
-  await dbConnect();
-  return await ProfileModel.findOneAndUpdate(
-    { userId: profile.userId },
-    profile,
-    { upsert: true, new: true }
-  );
+export async function saveProfile(profile: {
+  userId: string;
+  name: string;
+  title: string;
+  affiliation: string;
+  bio?: string;
+  email?: string;
+  contact?: {
+    googleScholar?: string;
+    researchGate?: string;
+    linkedin?: string;
+  };
+  photo?: string;
+  researchInterests?: string[];
+  stats?: {
+    publications?: number;
+    citations?: number;
+    hIndex?: number;
+    i10Index?: number;
+  };
+}) {
+  const payload = {
+    user_id: profile.userId,
+    name: profile.name,
+    title: profile.title,
+    affiliation: profile.affiliation,
+    bio: profile.bio ?? null,
+    email: profile.email ?? null,
+    google_scholar: profile.contact?.googleScholar ?? null,
+    research_gate: profile.contact?.researchGate ?? null,
+    linkedin: profile.contact?.linkedin ?? null,
+    image_url: profile.photo ?? null,
+    research_interests: profile.researchInterests ?? [],
+    stats_publications: profile.stats?.publications ?? 0,
+    stats_citations: profile.stats?.citations ?? 0,
+    stats_h_index: profile.stats?.hIndex ?? 0,
+    stats_i10_index: profile.stats?.i10Index ?? 0,
+  };
+
+  const { data, error } = await supabaseAdmin
+    .from('profiles')
+    .upsert(payload, { onConflict: 'user_id' })
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
 export async function getPublications() {
-  await dbConnect();
-  return await PublicationModel.find({}).sort({ year: -1 });
+  const { data, error } = await supabaseAdmin
+    .from('publications')
+    .select('*')
+    .order('year', { ascending: false });
+
+  if (error) throw error;
+  return (data || []) as Publication[];
 }
 
 export async function getPublicationsByUserId(userId: string) {
-  await dbConnect();
-  return await PublicationModel.find({ userId }).sort({ year: -1 });
+  const { data, error } = await supabaseAdmin
+    .from('publications')
+    .select('*')
+    .eq('user_id', userId)
+    .order('year', { ascending: false });
+
+  if (error) throw error;
+  return (data || []) as Publication[];
 }
 
 export async function addPublication(publication: any) {
-  await dbConnect();
-  const pub = new PublicationModel(publication);
-  return await pub.save();
+  const payload = {
+    user_id: publication.userId,
+    title: publication.title,
+    authors: publication.authors ?? [],
+    journal: publication.journal ?? null,
+    year: publication.year,
+    citations: publication.citations ?? 0,
+    type: publication.type ?? 'article',
+    doi: publication.doi ?? null,
+    link: publication.link ?? null,
+    file_url: publication.fileUrl ?? null,
+  };
+
+  const { data, error } = await supabaseAdmin
+    .from('publications')
+    .insert(payload)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
 export async function deletePublication(id: string, userId: string) {
-  await dbConnect();
-  return await PublicationModel.findOneAndDelete({ _id: id, userId });
+  const { error } = await supabaseAdmin
+    .from('publications')
+    .delete()
+    .match({ id, user_id: userId });
+
+  if (error) throw error;
+  return true;
 }
 
 export async function getAllPublicProfiles() {
-  await dbConnect();
-  return await ProfileModel.find({});
+  const { data, error } = await supabaseAdmin.from('profiles').select('*');
+  if (error) throw error;
+  return data || [];
 }
 
 export async function searchProfiles(query: string) {
-  await dbConnect();
-  const lowerQuery = query.toLowerCase();
-  return await ProfileModel.find({
-    $or: [
-      { name: { $regex: lowerQuery, $options: 'i' } },
-      { title: { $regex: lowerQuery, $options: 'i' } },
-      { affiliation: { $regex: lowerQuery, $options: 'i' } },
-      { researchInterests: { $regex: lowerQuery, $options: 'i' } },
-    ]
-  });
+  const q = query.toLowerCase();
+
+  const { data, error } = await supabaseAdmin
+    .from('profiles')
+    .select('*')
+    .or(
+      `name.ilike.%${q}%,title.ilike.%${q}%,affiliation.ilike.%${q}%`
+    );
+
+  if (error) throw error;
+  return data || [];
 }
 
 export async function getStatistics() {
-  await dbConnect();
-  const publications = await PublicationModel.find({});
-  
+  const publications = (await getPublications()) as Publication[];
+
   const totalPublications = publications.length;
-  const totalCitations = publications.reduce((sum, p) => sum + (p.citations || 0), 0);
-  
-  // Calculate h-index
-  const sortedByCitations = [...publications]
-    .sort((a, b) => (b.citations || 0) - (a.citations || 0));
+  const totalCitations = publications.reduce(
+    (sum, p) => sum + (p.citations || 0),
+    0
+  );
+
+  const sortedByCitations = [...publications].sort(
+    (a, b) => (b.citations || 0) - (a.citations || 0)
+  );
   let hIndex = 0;
   for (let i = 0; i < sortedByCitations.length; i++) {
     if ((sortedByCitations[i].citations || 0) >= i + 1) {
@@ -93,39 +191,47 @@ export async function getStatistics() {
       break;
     }
   }
-  
-  // Calculate i10-index
-  const i10Index = publications.filter(p => (p.citations || 0) >= 10).length;
-  
-  // Citations by year
+
+  const i10Index = publications.filter(
+    (p) => (p.citations || 0) >= 10
+  ).length;
+
   const citationsByYearMap = new Map<number, number>();
-  publications.forEach(pub => {
+  publications.forEach((pub: Publication) => {
     const year = pub.year;
-    citationsByYearMap.set(year, (citationsByYearMap.get(year) || 0) + (pub.citations || 0));
+    citationsByYearMap.set(
+      year,
+      (citationsByYearMap.get(year) || 0) + (pub.citations || 0)
+    );
   });
   const citationsByYear = Array.from(citationsByYearMap.entries())
     .map(([year, citations]) => ({ year, citations }))
     .sort((a, b) => a.year - b.year);
-  
-  // Publications by year
+
   const publicationsByYearMap = new Map<number, number>();
-  publications.forEach(pub => {
+  publications.forEach((pub) => {
     const year = pub.year;
-    publicationsByYearMap.set(year, (publicationsByYearMap.get(year) || 0) + 1);
+    publicationsByYearMap.set(
+      year,
+      (publicationsByYearMap.get(year) || 0) + 1
+    );
   });
   const publicationsByYear = Array.from(publicationsByYearMap.entries())
     .map(([year, count]) => ({ year, count }))
     .sort((a, b) => a.year - b.year);
-  
-  // Citations by type
+
   const citationsByTypeMap = new Map<string, number>();
-  publications.forEach(pub => {
-    const type = pub.type || 'article';
-    citationsByTypeMap.set(type, (citationsByTypeMap.get(type) || 0) + (pub.citations || 0));
+  publications.forEach((pub) => {
+    const type = (pub.type as string) || 'article';
+    citationsByTypeMap.set(
+      type,
+      (citationsByTypeMap.get(type) || 0) + (pub.citations || 0)
+    );
   });
-  const citationsByType = Array.from(citationsByTypeMap.entries())
-    .map(([type, count]) => ({ type, count }));
-    
+  const citationsByType = Array.from(citationsByTypeMap.entries()).map(
+    ([type, count]) => ({ type, count })
+  );
+
   return {
     totalPublications,
     totalCitations,

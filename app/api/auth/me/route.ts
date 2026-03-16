@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     const users = await getUsers();
-    const user = users.find(u => u.id === decoded.userId);
+    const user = users.find((u: any) => u._id.toString() === decoded.userId);
 
     if (!user) {
       return NextResponse.json({ user: null }, { status: 200 });
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       user: {
-        id: user.id,
+        id: user._id.toString(),
         username: user.username,
         email: user.email,
       },

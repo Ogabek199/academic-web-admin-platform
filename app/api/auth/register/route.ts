@@ -7,30 +7,33 @@ export async function POST(request: NextRequest) {
 
     if (!username || !password || !email) {
       return NextResponse.json(
-        { error: 'Barcha maydonlar to\'ldirilishi kerak' },
+        { error: "Barcha maydonlar to'ldirilishi kerak" },
         { status: 400 }
       );
     }
 
     const user = await registerUser(username, password, email);
-    const token = generateToken(user.id, user.username);
+    const userId = user._id.toString();
+
+    const token = generateToken(userId, user.username);
 
     const response = NextResponse.json({
       success: true,
-      user: { id: user.id, username: user.username, email: user.email },
+      user: { id: userId, username: user.username, email: user.email },
     });
 
     response.cookies.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Registration xatolik';
     return NextResponse.json(
-      { error: error.message || 'Registration xatolik' },
+      { error: message },
       { status: 400 }
     );
   }
